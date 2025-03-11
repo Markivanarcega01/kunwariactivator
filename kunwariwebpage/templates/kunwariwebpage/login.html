@@ -1,28 +1,22 @@
 {% extends 'kunwariwebpage/base.html'%}
 {% block maincontent %}
 
-<div class="wrapper">
-  <div class="form-wrapper sign-in">
-      <form action="" method="POST">
-          <h2>Login</h2>
-          <div class="input-group">
-              <input type="text" name="username" required>
-              <label for="">Username</label>
-          </div>
-          <div class="input-group">
-              <input type="password" name="password" required>
-              <label for="">Password</label>
-          </div>
-
-          <button type="submit">Login</button>
-          <div class="admin_login">
-              <p>Login as <a href="admin_login.php">Admin</a></p>
-          </div>
-          <div class="signUp-link">
-              <p>Don't have an account? <a href="register.php">Sign Up</a></p>
-          </div>
-      </form>
-  </div>
-</div>
+<body class="login">
+    <div class="login-container">
+        <h2 class="login">Login</h2>
+        <form action="" method="POST">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <div class="remember">
+                <input type="checkbox" id="remember"> <label for="remember">Remember Me</label>
+                <a href="#" class="forgot">Forgot Password?</a>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="signup">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+        </div>
+      </div>
+</body>
 
 {% endblock %}
