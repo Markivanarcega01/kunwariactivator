@@ -4,6 +4,22 @@ const loginBtn = document.querySelector('.login-btn');
 
 console.log(registerBtn);
 
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const loginSubmit = document.getElementById('login-submit');
+const adminCredentials = {
+    username: 'admin',
+    password: 'password'
+}
+
+loginSubmit.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(username.value === adminCredentials.username && password.value === adminCredentials.password) {
+        console.log('You are an admin');
+    }
+})
+
+
 registerBtn.addEventListener('click', (e) => {
   container.classList.add('active');
 });
@@ -11,3 +27,6 @@ registerBtn.addEventListener('click', (e) => {
 loginBtn.addEventListener('click', (e) => {
   container.classList.remove('active');
 });
+
+
+
