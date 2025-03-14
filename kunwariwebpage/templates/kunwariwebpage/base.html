@@ -4,13 +4,14 @@
     
     <title>Kunwari Activator</title>
     {% load static %}
-    <script src="{% static 'kunwariwebpage/index.js' %}"></script>
-    <link rel = "stylesheet" href = "{% static 'kunwariwebpage/style.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
     {% block maincontent%}
     {% endblock %}
+
+    <script src="{% static 'kunwariwebpage/index.js' %}"></script>
+    <link rel = "stylesheet" href = "{% static 'kunwariwebpage/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </body>
 </html>
