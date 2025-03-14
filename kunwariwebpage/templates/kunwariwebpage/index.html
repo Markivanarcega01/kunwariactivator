@@ -1,11 +1,16 @@
 {% extends 'kunwariwebpage/base.html'%}
 {% block maincontent %}
 
-<form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data">
-    <h1>Chat with GPT-4o Mini</h1>
-    <input type="text" id="prompt" placeholder="Type a message..." name="prompt">
-    <button type="submit">Send</button>
-</form>
+<body class="body-index">
+    <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data">
+        <h1>Chat with GPT-4o Mini</h1>
+        <input type="text" id="prompt" placeholder="Type a message..." name="prompt">
+        <button type="submit">Send</button>
+    </form>
+    
+    <div id="chat_response">
+        {{response}}{% lorem 1 b random %}
+    </div>
+</body>
 
-    <div id="chat_response">{{response}}{% lorem 1 b random %}</div>
 {% endblock %}
