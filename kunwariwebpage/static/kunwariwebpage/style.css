@@ -235,6 +235,7 @@ form {
 /* Index Page */
 .body-index {
   font-family: 'Poppins', sans-serif;
+  color: #2a2a2a;
   background-color: #fffae8;
   display: flex;
   justify-content: center;
@@ -329,12 +330,5 @@ form {
 .theme-change .light-btn {
   display: none;
 }
-.dark-mode {
-  background-color: #2a2a2a;
-  color: #fffae8;
-}
-.light-mode {
-  background-color: #fffae8;
-  color: #2a2a2a;
-}
+
 
