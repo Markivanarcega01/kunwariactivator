@@ -120,6 +120,11 @@ form {
   color: #fffae8;
   text-decoration: none;
   margin: 0 8px;
+  transition: .3s ease-in-out;
+}
+.social-icons a:hover {
+  background: #fffae8;
+  color: #2a2a2a;
 }
 .toggle-box {
   position: absolute;

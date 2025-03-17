@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kunwari_db',
         'USER': 'root',
-        'PASSWORD': 'Markivan01',
+        'PASSWORD': '123456789',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
