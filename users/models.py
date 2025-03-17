@@ -8,7 +8,7 @@ class CustomAccountManager(BaseUserManager):
     def create_user(self,username, password, email, **other_fields):
         if not email:
             raise ValueError('Users must have an email')
-        other_fields.setdefault('is_active', True)
+        other_fields.setdefault('is_active', True)# Make a email verification for this one in the future
         email = self.normalize_email(email)
         user = self.model(
             username = username,
