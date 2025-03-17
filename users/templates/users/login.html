@@ -1,17 +1,18 @@
-{% extends 'kunwariwebpage/base.html'%}
+{% extends 'base.html'%}
 {% block maincontent %}
 
 <div class="body-login">
 <div class="container">
   <div class="form-box login">
-    <form action="">
+    <form method="post" action="{% url 'users:login_user'%}" enctype="multipart/form-data">
+      {% csrf_token %}
       <h1>Login</h1>
       <div class="input-box">
-        <input type="text" placeholder="Username" required id="username">
+        <input type="text" placeholder="Username" required id="username" name="username">
         <i class='bx bxs-user'></i>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Password" required id="password">
+        <input type="password" placeholder="Password" required id="password" name="password">
         <i class='bx bxs-lock-alt' ></i>
       </div>
       <div class="forgot-link">
@@ -19,6 +20,7 @@
       </div>
       <button type="submit" class="btn" id="login-submit">Login</button>
       <p>or login with social platforms</p>
+      {% comment %} Lipat mo tong mga social icons, ilabas mo ng form {% endcomment %}
       <div class="social-icons">
         <a href="#"><i class='bx bxl-google' ></i></a>
         <a href="#"><i class='bx bxl-facebook' ></i></a>
@@ -29,18 +31,27 @@
   </div>
 
   <div class="form-box register">
-    <form action="">
+    <form action="{% url 'users:register_user'%}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
       <h1>Registration</h1>
       <div class="input-box">
-        <input type="text" placeholder="Username" required>
+        <input type="text" placeholder="First Name" required name="register-firstname">
         <i class='bx bxs-user'></i>
       </div>
       <div class="input-box">
-        <input type="email" placeholder="Email" required>
+        <input type="text" placeholder="Last Name" required name="register-lastname">
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="text" placeholder="Username" required name="register-username">
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="email" placeholder="Email" required name="register-email">
         <i class='bx bxs-envelope'></i>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Password" required>
+        <input type="password" placeholder="Password" required name="register-password">
         <i class='bx bxs-lock-alt' ></i>
       </div>
       <button type="submit" class="btn">Register</button>
