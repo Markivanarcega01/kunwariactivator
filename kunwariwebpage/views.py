@@ -1,14 +1,16 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .utils import generate_response
 
 def index(request):
-    context = {
-        'name': 'Mark Ivan Arcega',
-    }
-    return render(request, 'kunwariwebpage/index.html', context)
+    if 'user' in request.session:
+        current_user = request.session['user']
+        param = {'current_user': current_user}
+        return render(request, 'kunwariwebpage/index.html', param)
+    else:
+        return redirect('login')
 
 
 #def register(request):

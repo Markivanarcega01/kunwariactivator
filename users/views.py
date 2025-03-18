@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.urls import reverse
 #from django.contrib.auth.models import User
@@ -11,10 +10,11 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate( username =username, password = password)
+        db = get_user_model()
+        user = db.objects.filter(username = username, password = password)
         print(user)
         if user is not None:
-            login(request, user)
+            request.session['user'] = username
             return redirect(reverse('kunwariwebpage:index'))
         else:
             messages.success(request, "Invalid login")
@@ -31,6 +31,8 @@ def register_user(request):
         password = request.POST["register-password"]
         
         db = get_user_model()
+        if db.objects.filter(username = username).exists():
+            return messages.error("Username already exists")
         user = db.objects.create_user(
             username = username,
             password = password,
@@ -42,3 +44,10 @@ def register_user(request):
         return redirect(reverse('kunwariwebpage:index'))
     else:
         return render(request, 'users/login.html')
+    
+
+def logout(request):
+    try:
+        del request.session['user']
+    except:
+        return redirect('login')
