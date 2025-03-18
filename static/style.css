@@ -91,7 +91,7 @@ form {
   color: #fffae8;
   text-decoration: none;
 }
-.btn {
+.body-index.btn {
   width: 100%;
   height: 48px;
   background: #fffae8;
@@ -262,7 +262,7 @@ form {
   margin-bottom: 15px;
   color: #2a2a2a;
 }
-.body-index input[type="text"] {
+.body-index textarea {
   width: 100%;
   padding: 12px;
   border: 2px solid #2a2a2a51;
@@ -272,8 +272,10 @@ form {
   transition: border 0.3s;
   resize: none;
   min-height: 40px;
-  max-height: 120px;
+  max-height: 350px;
+  overflow-x: hidden;
   overflow-y: auto;
+  line-height: 1.5;
 }
 .body-index input[type="text"]:focus {
   border-color: #2a2a2a;
@@ -301,45 +303,35 @@ form {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.8;
   color: #333;
-  width: 350px;
-  max-width: 350px;
+  width: 600px;
+  max-width: 600px;
   height: 500px;
   text-align: left;
   overflow-y: auto;
 }
-.theme-change button.dark-btn,
-.theme-change button.light-btn {
+.user-options button.user-btn {
   width: 50px;
   height: 50px;
   position: absolute;
   top: 12px;
-  left: 12px;
+  right: 12px;
   font-size: 24px;
   background: #2a2a2a;
   cursor: pointer;
   border: 2px solid #2a2a2a;
+  border-radius: 8px;
   color: #fffae8;
   transition: 0.3s ease-in-out;
 }
-.theme-change button i {
+.user-options button i {
   padding: 12px;
 }
-.theme-change button:hover {
+.user-options button:hover {
   background: #fffae8;
   color: #2a2a2a;
   border: 2px solid #2a2a2a;
-}
-.theme-change .light-btn {
-  display: none;
-}
-.dark-mode {
-  background-color: #2a2a2a;
-  color: #fffae8;
-}
-.light-mode {
-  background-color: #fffae8;
-  color: #2a2a2a;
 }
 

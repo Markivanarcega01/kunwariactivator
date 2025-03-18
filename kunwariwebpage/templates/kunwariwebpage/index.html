@@ -1,10 +1,10 @@
 {% extends 'base.html'%}
 {% block maincontent %}
 
-<div class="body-index light-mode">
+<div class="body-index">
     <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data">
         <h1>Chat with GPT-4o Mini</h1>
-        <input type="text" id="prompt" placeholder="Type a message..." name="prompt">
+        <textarea id="prompt" placeholder="Type a message..." name="prompt"></textarea>
         <button class="submit" type="submit">Send</button>
     </form>
 
@@ -12,14 +12,20 @@
         {{response}}{% lorem 1 b random %}
     </div>
 
-    <div class="theme-change">
-        <button class="btn dark-btn">
-            <i class='bx bxs-moon'></i>
-        </button>
-        <button class="btn light-btn">
-            <i class='bx bxs-sun' ></i>
+    <div class="user-options">
+        <button class="btn user-btn">
+            <i class='bx bxs-user'></i>
         </button>
     </div>
 </div>
+
+<script> // TEXTAREA HEIGHT AUTO RESIZE
+    const textarea = document.getElementById('prompt');
+
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+</script>
 
 {% endblock %}
