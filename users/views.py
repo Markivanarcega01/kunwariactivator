@@ -7,6 +7,8 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 
 def login_user(request):
+    if 'user' in request.session:
+        return redirect(reverse('kunwariwebpage:index'))
     if request.method == 'POST':
         username = request.POST["username"]
         password = request.POST["password"]
@@ -49,5 +51,6 @@ def register_user(request):
 def logout(request):
     try:
         del request.session['user']
+        return redirect(reverse('users:login_user'))
     except:
-        return redirect('login')
+        return redirect(reverse('kunwariwebpage:index'))
