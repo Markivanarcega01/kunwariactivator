@@ -257,6 +257,10 @@ form {
   height: 675px;
   text-align: center;
 }
+.body-index form,
+.body-index #chat_response {
+  margin: 0 8px;
+}
 .body-index h1 {
   font-size: 20px;
   margin-bottom: 15px;
