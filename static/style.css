@@ -271,8 +271,8 @@ form {
   outline: none;
   transition: border 0.3s;
   resize: none;
-  min-height: 40px;
-  max-height: 350px;
+  max-height: 80px;
+  min-height: 80px;
   overflow-x: hidden;
   overflow-y: auto;
   line-height: 1.5;
