@@ -245,7 +245,7 @@ form {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
+  margin: 0 ;
   transition: background-color 0.3s, color 0.3s;
 }
 .body-index form {
@@ -259,7 +259,7 @@ form {
 }
 .body-index form,
 .body-index #chat_response {
-  margin: 0 8px;
+  margin: 32px 8px 0 8px;
 }
 .body-index h1 {
   font-size: 20px;
@@ -391,23 +391,34 @@ form {
   .body-index .user-options {
     position: absolute;
     top: 0;
-    left: 85px;
+    right: 16px;
+  }
+  .body-index .logo {
+    left: 26px;
   }
   .body-index .dropdown {
     position: absolute;
     bottom: 60px;
-    right: 0;
-    background-color: #f9f9f9;
+    right: 10px;
+    background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    display: none;
+    z-index: 1000;
+  }
+  .body-index .user-options .dropdown {
+    border: 1px solid #fff;
+    border-radius: 8px;
   }
   .body-index .dropdown a {
-    color: black;
+    color: #2a2a2a;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    width: 200px;
+    background-color: #fff;
+  }
+  .body-index .dropdown a i {
+    color: #2a2a2a;
   }
   .body-index .user-options button i {
     padding: 0;
@@ -422,5 +433,104 @@ form {
     border: none;
     border-radius: 50%;
     cursor: pointer;
+  }
+}
+
+/* Logo || TOP LEFT || */
+.logo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+.logo button {
+  color: #fffae8;
+  font-size: 16px;
+  background-color: #2a2a2a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 0 6px;
+  height: 48px;
+  width: 64px;
+}
+
+/* Pricing Page */
+.body-pricing {
+  margin: 0;
+  padding: 0;
+  background-color: #fffae8;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.pricing-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.price {
+  font-size: 36px;
+  color: #2a2a2a;
+  margin-bottom: 10px;
+}
+.plan-name {
+  font-size: 24px;
+  color: #2a2a2a;
+  margin-bottom: 25px;
+}
+.benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  max-width: 250px;
+}
+.benefits li {
+  margin: 12px 0;
+  color: #2a2a2a;
+  font-size: 16px;
+}
+.choose-button {
+  background-color: #2a2a2a;
+  color: #fffae8;
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.choose-button:hover {
+  background-color: #000;
+}
+@media (max-width: 650px) {
+  .pricing-container {
+    padding: 25px 20px;
+    max-width: 90%;
+  }
+  .price {
+    font-size: 28px;
+  }
+  .plan-name {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .benefits li {
+    font-size: 14px;
+  }
+  .choose-button {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }
