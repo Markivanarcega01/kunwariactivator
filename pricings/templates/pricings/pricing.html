@@ -25,7 +25,7 @@
     </button>
     <div id="userDropdown" class="dropdown">
         <a href="#"><i class='bx bxs-palette'></i>Change Theme</a>
-        <a href="#"><i class='bx bxs-purchase-tag'></i>Pricing</a>
+        <a href="{% url 'pricings:pricing_list'%}"><i class='bx bxs-purchase-tag'></i>Pricing</a>
         <a href="#"><i class='bx bxs-cog'></i>Settings</a>
         <a href="{% url 'users:logout_user'%}"><i class='bx bxs-log-out'></i>Logout</a>
     </div>

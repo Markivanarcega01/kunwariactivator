@@ -316,6 +316,34 @@ form {
   text-align: left;
   overflow-y: auto;
 }
+@media screen and (max-width: 650px) {
+  .body-index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .body-index form {
+    width: 90%;
+    margin-bottom: 20px;
+    margin-top: 73px;
+  }
+  .body-index #chat_response {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  .body-index textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .body-index .submit {
+    width: 100%;
+  }
+  .body-index .logo {
+    left: 26px;
+  }
+}
+
+/* Dropdown */
 .dropdown {
   display: none;
   position: absolute;
@@ -367,72 +395,11 @@ form {
   vertical-align: middle;
 }
 @media screen and (max-width: 650px) {
-  .body-index {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .user-options .user-btn {
+    margin-right: 8px;
   }
-  .body-index form {
-    width: 90%;
-    margin-bottom: 20px;
-    margin-top: 73px;
-  }
-  .body-index #chat_response {
-    width: 90%;
-    margin-bottom: 20px;
-  }
-  .body-index textarea {
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .body-index .submit {
-    width: 100%;
-  }
-  .body-index .user-options {
-    position: absolute;
-    top: 0;
-    right: 16px;
-  }
-  .body-index .logo {
-    left: 26px;
-  }
-  .body-index .dropdown {
-    position: absolute;
-    bottom: 60px;
-    right: 10px;
-    background-color: #fff;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  }
-  .body-index .user-options .dropdown {
-    border: 1px solid #fff;
-    border-radius: 8px;
-  }
-  .body-index .dropdown a {
-    color: #2a2a2a;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    width: 200px;
-    background-color: #fff;
-  }
-  .body-index .dropdown a i {
-    color: #2a2a2a;
-  }
-  .body-index .user-options button i {
-    padding: 0;
-  }
-  .body-index .dropdown a:hover {
-    background-color: #ddd;
-  }
-  .body-index .user-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
+  .user-options .dropdown {
+    margin-right: 8px;
   }
 }
 
