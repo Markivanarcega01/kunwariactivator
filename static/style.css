@@ -324,12 +324,12 @@ form {
   }
   .body-index form {
     width: 90%;
-    margin-bottom: 20px;
-    margin-top: 73px;
+    margin-top: 80px;
   }
   .body-index #chat_response {
     width: 90%;
     margin-bottom: 20px;
+    margin-top: 12px;
   }
   .body-index textarea {
     width: 100%;
@@ -337,9 +337,6 @@ form {
   }
   .body-index .submit {
     width: 100%;
-  }
-  .body-index .logo {
-    left: 26px;
   }
 }
 
@@ -394,6 +391,17 @@ form {
   margin-right: 8px;
   vertical-align: middle;
 }
+.theme-dropdown {
+  display: none;
+  position: absolute;
+  right: 105%;
+  top: 0;
+  margin-left: 5px;
+  white-space: nowrap;
+}
+.theme-dropdown.show {
+  display: block;
+}
 @media screen and (max-width: 650px) {
   .user-options .user-btn {
     margin-right: 8px;
@@ -418,6 +426,11 @@ form {
   padding: 0 6px;
   height: 48px;
   width: 64px;
+}
+@media screen and (max-width: 650px) {
+  .logo {
+    left: 20px;
+  }
 }
 
 /* Pricing Page */

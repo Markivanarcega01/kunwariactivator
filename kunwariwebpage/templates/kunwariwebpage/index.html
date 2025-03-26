@@ -17,7 +17,14 @@
             <i class='bx bxs-user'></i>
         </button>
         <div id="userDropdown" class="dropdown">
-            <a href="#"><i class='bx bxs-palette'></i>Change Theme</a>
+            <a href="#" onclick="toggleThemeDropdown()">
+                <i class='bx bxs-palette'></i>Change Theme
+            </a>
+            <div id="themeDropdown" class="dropdown theme-dropdown">
+                <a href="#" onclick="setTheme('light')"><i class='bx bxs-sun'></i>Light Mode</a>
+                <a href="#" onclick="setTheme('dark')"><i class='bx bxs-moon'></i>Dark Mode</a>
+                <a href="#" onclick="setTheme('system')"><i class='bx bx-desktop'></i>System Default</a>
+            </div>
             <a href="{% url 'pricings:pricing_list'%}"><i class='bx bxs-purchase-tag'></i>Pricing</a>
             <a href="#"><i class='bx bxs-cog'></i>Settings</a>
             <a href="{% url 'users:logout_user'%}"><i class='bx bxs-log-out'></i>Logout</a>
@@ -51,6 +58,22 @@
           }
         }
       }
+</script>
+
+<script> // THEME DROPDOWN
+    function toggleThemeDropdown() {
+        const dropdown = document.getElementById('themeDropdown');
+        dropdown.classList.toggle('show');
+    }
+    
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('themeDropdown');
+        const toggleButton = document.querySelector("a[onclick='toggleThemeDropdown()']");
+        
+        if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
 </script>
 
 {% endblock %}
