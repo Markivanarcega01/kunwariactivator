@@ -3,12 +3,15 @@ from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .utils import generate_response
+from django.contrib.auth import get_user_model
 
 def index(request):
     if 'user' in request.session:
+        db = get_user_model()
         current_user = request.session['user']
-        param = {'current_user': current_user}
-        return render(request, 'kunwariwebpage/index.html', param)
+        isUserAdmin = db.objects.filter(username = current_user, is_superuser = 1).exists()
+        params = {'current_user': current_user, "isAdmin": isUserAdmin}
+        return render(request, 'kunwariwebpage/index.html', {"params":params})
     else:
         return redirect('login')
 

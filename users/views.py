@@ -54,3 +54,12 @@ def logout(request):
         return redirect(reverse('users:login_user'))
     except:
         return redirect(reverse('kunwariwebpage:index'))
+    
+
+def accounts(request):
+    try:
+        db = get_user_model()
+        users = db.objects.all()
+        return render(request, 'users/accounts.html', {"users": users})
+    except:
+        pass

@@ -1,0 +1,8 @@
+{% extends 'base.html'%}
+{% block maincontent %}
+this is the accounts section
+
+{% for user in users %}
+<div>{{user.username}}</div>
+{% endfor %}
+{% endblock %}
