@@ -10,7 +10,8 @@ def generate_response(prompt):
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Use your fine-tuned model name
-            messages=[{"role": "system", "content": "You are a helpful assistant."},
+            messages=[{"role": "system", "content": 
+                       "Always format your response using HTML 5 tags like h1,h2,h3,h4,h5,strong,p, and many more to properly display them"},
                       {"role": "user", "content": prompt}],
             temperature=0.7
         )
