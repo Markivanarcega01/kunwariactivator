@@ -8,6 +8,7 @@ const loginSubmit = document.getElementById('login-submit');
 const submitToChatgpt = document.querySelector('#submit-to-chatgpt');
 const prompt = document.querySelector('#prompt');
 const chatresponse = document.querySelector('#chat_response')
+
 // const adminCredentials = {
 //     username: 'admin',
 //     password: 'password'
