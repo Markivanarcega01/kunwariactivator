@@ -2,15 +2,15 @@
 {% block maincontent %}
 
 <div class="body-index">
-    <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data">
+    {% comment %} <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data"> {% endcomment %}
+    <form>
         <h1>Chat with GPT-4o Mini</h1>
         <textarea id="prompt" placeholder="Type a message..." name="prompt"></textarea>
-        <button class="submit" type="submit">Send</button>
+        <button class="submit" type="submit" id="submit-to-chatgpt">Send</button>
     </form>
 
-    <div id="chat_response">
-        {{response | safe}}
-    </div>
+    <pre id="chat_response">
+    </pre>
 
     <div class="user-options">
         <button class="btn user-btn" onclick="toggleDropdown()">
