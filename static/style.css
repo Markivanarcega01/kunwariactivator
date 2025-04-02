@@ -19,7 +19,7 @@
 .container {
   position: relative;
   width: 850px;
-  height: 550px;
+  height: 600px;
   background: #fffae8;
   border-radius: 16px;
   box-shadow: 0 0 30px rgba(0, 0, 0, .2);
@@ -184,6 +184,9 @@ form {
   color: #fffae8;
   border: 2px solid #2a2a2a;
   box-shadow: none;
+}
+.body-login .register .input-box input {
+  margin-top: -16px;
 }
 @media screen and (max-width: 650px) {
   .container {
