@@ -30,6 +30,10 @@ def generate_response(prompt):
             #Finally, Always format your response using HTML 5 tags like h1,h2,h3,h4,h5,strong,p, and many more to properly display them.
             stream=True,
         )
+        #history_list = client.chat.completions.list()
+        #for history in history_list:
+            #delete_response = client.chat.completions.delete(completion_id=history.id)
+            #print(delete_response)
         #print(client.chat.completions.list())
         for chunk in response:
            if chunk.choices[0].delta.content is not None:
