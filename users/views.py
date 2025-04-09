@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.urls import reverse
@@ -56,10 +57,10 @@ def logout(request):
         return redirect(reverse('kunwariwebpage:index'))
     
 
-def accounts(request):
-    try:
-        db = get_user_model()
-        users = db.objects.all()
-        return render(request, 'users/accounts.html', {"users": users})
-    except:
-        pass
+# def accounts(request):
+#     try:
+#         db = get_user_model()
+#         users = db.objects.all()
+#         return render(request, 'users/accounts.html', {"users": users})
+#     except:
+#         pass

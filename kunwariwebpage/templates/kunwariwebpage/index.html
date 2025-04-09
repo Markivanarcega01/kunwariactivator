@@ -4,8 +4,8 @@
 <div class="body-index">
     {% comment %} <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data"> {% endcomment %}
     <form>
-        <h1>Chat with GPT-4o Mini</h1>
-        <textarea id="prompt" placeholder="Type a message..." name="prompt"></textarea>
+        <h1>Kunwari Activator</h1>
+        <textarea id="prompt" placeholder="eg. mathematics, 60 minutes, learning objectives" name="prompt"></textarea>
         <button class="submit" type="submit" id="submit-to-chatgpt">Send</button>
     </form>
 
@@ -27,9 +27,9 @@
             </div>
             <a href="{% url 'pricings:pricing_list'%}"><i class='bx bxs-purchase-tag'></i>Pricing</a>
             <a href="#"><i class='bx bxs-cog'></i>Settings</a>
-            {% if params.isAdmin %}
+            {% comment %} {% if params.isAdmin %}
             <a href="{% url 'users:accounts'%}"><i class='bx bxs-cog'></i>Accounts</a>
-            {% endif %}
+            {% endif %} {% endcomment %}
             <a href="{% url 'users:logout_user'%}"><i class='bx bxs-log-out'></i>Logout</a>
         </div>
     </div>

@@ -33,7 +33,7 @@ def chatbot_view(request):
                 data = json.loads(request.body)
                 message = data['message']
                 message += """
-                    1. Create analogies and laymanized examples to teach the topics and lessons.
+                1. Create analogies and laymanized examples to teach the topics and lessons.
 2. Create Detailed Teaching and Learning Games, Activities, and Exercises aligned with the created analogies and laymanized examples that teaches the topics and lessons.
 3. Create detailed gamified quizzes and exams aligned with the created analogies and
 laymanized examples that teaches the topics and lessons.
