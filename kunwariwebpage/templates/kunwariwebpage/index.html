@@ -4,12 +4,15 @@
 <div class="body-index">
     {% comment %} <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data"> {% endcomment %}
     <form>
+        {% csrf_token %}
         <h1>Kunwari Activator</h1>
         <textarea id="prompt" placeholder="eg. mathematics, 60 minutes, learning objectives" name="prompt"></textarea>
         <button class="submit" type="submit" id="submit-to-chatgpt">Send</button>
+        <button class="submit" type="submit" id="generate-pptx" hidden>Generate Powerpoint</button>
     </form>
-
+    
     <div id="chat_response">
+       
     </div>
 
     <div class="user-options">
