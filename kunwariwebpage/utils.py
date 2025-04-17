@@ -5,6 +5,13 @@ from django.conf import settings
 
 # Set OpenAI API Key
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
+#print(client.chat.completions.list())
+#print(client.chat.completions.messages.list(completion_id="chatcmpl-BMaOkmAK7b0O5YMUYPIbOMoiM2ZiL"))
+#print(client.chat.completions.retrieve("chatcmpl-BMaOkmAK7b0O5YMUYPIbOMoiM2ZiL"))
+# history_list = client.chat.completions.list()
+# for history in history_list:
+#     delete_response = client.chat.completions.delete(completion_id=history.id)
+#     print(delete_response)
 
 def generate_response(prompt):
     try:
@@ -30,15 +37,12 @@ def generate_response(prompt):
             #Finally, Always format your response using HTML 5 tags like h1,h2,h3,h4,h5,strong,p, and many more to properly display them.
             stream=True,
         )
-        #history_list = client.chat.completions.list()
-        #for history in history_list:
-            #delete_response = client.chat.completions.delete(completion_id=history.id)
-            #print(delete_response)
+        
         #print(client.chat.completions.list())
         for chunk in response:
            if chunk.choices[0].delta.content is not None:
                yield(chunk.choices[0].delta.content)
-
+        
 
         #return response.choices[0].message.content
         #return response["choices"][0]["message"]["content"]
