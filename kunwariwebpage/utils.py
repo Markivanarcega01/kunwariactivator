@@ -30,8 +30,8 @@ Providing sufficient detail without overwhelming users with unnecessary informat
 Framing suggestions as options rather than mandates, respecting teacher autonomy,
 Using language that empowers teachers and inspires confidence,
 Asking clarifying questions when needed to better understand the teaching context,
-"""},
-                    {"role": "user", "content": prompt}],
+Response should be not contain unnecessary paragraphs like this (Absolutely! Below is a more detailed breakdown of the content for each slide in the episodic lesson plan. This will provide you with a comprehensive guide that can be adapted into your presentation slides.) etc.
+"""},{"role": "user", "content": prompt}],
             temperature=0.7,
             #store=True,
             #Finally, Always format your response using HTML 5 tags like h1,h2,h3,h4,h5,strong,p, and many more to properly display them.

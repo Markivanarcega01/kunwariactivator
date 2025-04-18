@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 import json
 from pptx import Presentation
 from pptx.util import Inches, Pt
+from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE
 import re
 
 def index(request):
@@ -41,7 +42,8 @@ def generate_pptx(request):
             data = json.loads(request.body)
             message = data['message']
             #parts = re.split(r'(?=\b(?:[1-9]|1[0-9]|2[0-3])\. )', message)
-            parts = re.split(r'<h3>', message)
+            #parts = re.split(r'<h3>', message)
+            parts = re.split('<hr>', message)
             blank_slide_layout = prs.slide_layouts[6]
             save_directory = os.path.join(settings.BASE_DIR, 'media')
             for part in parts:
@@ -55,8 +57,9 @@ def generate_pptx(request):
                 tf = txBox.text_frame
                 tf.word_wrap = True
                 p = tf.add_paragraph()
-                p.font.size = Pt(20)
+                #p.font.size = Pt(20)
                 p.text = trim_part
+                tf.fit_text()
             prs.save(os.path.join(save_directory,"output.pptx"))
             return JsonResponse({"message": message}, status=200)
     except Exception as e:
@@ -105,7 +108,7 @@ Bonus Challenge - Automatically generate a challenge from real-world scenarios o
 
 Rewards and Badges - Automatically unlock Achievements based on performance and engagement.
 
-
+Do not forgot to put <hr> to separate the topics
 """
 #Finally, Format your response in markdown
 #Use this exact structure: use h1 for lesson title, use h3 for the each dashed line
@@ -130,6 +133,7 @@ Episode 1: Gamified Lessons - automatically create slides from lesson modules.
 Episode 2: Gamified Teaching and Learning Activities - Create slides for interactive activities. 
 Episode 3: Gamified Assessments - Create slides for narrative-based assessments. 
 Repeat as needed for further episodes -  Tailored lessons, activities, and assessments in sequence.
+Do not forgot to put <hr> to separate the topics
             """
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
@@ -144,6 +148,7 @@ def generate_content(request):
             data = json.loads(request.body)
             message = data['message']
             message += """Please generate detailed content for the Episode slides above.
+Do not forgot to put <hr> to separate the topics
             """
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
@@ -158,6 +163,7 @@ def generate_facilitator_script(request):
             data = json.loads(request.body)
             message = data['message']
             message += """Please generate a complete facilitator script for the Episode slides above.
+Do not forgot to put <hr> to separate the topics
             """
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
