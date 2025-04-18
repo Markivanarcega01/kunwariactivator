@@ -171,7 +171,7 @@ if(generatePptx){
       headers: { 
         "X-CSRFToken": csrf_token,
         "Content-type": "application/json" },
-      body: JSON.stringify({ message: chatresponse.textContent }),
+      body: JSON.stringify({ message: chatresponse.innerHTML }),
     })
     //console.log(response)
   })

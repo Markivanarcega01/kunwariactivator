@@ -8,7 +8,7 @@ from .utils import generate_response
 from django.contrib.auth import get_user_model
 import json
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 import re
 
 def index(request):
@@ -28,25 +28,35 @@ def index(request):
 #def forgotpassword(request):
 #    return render(request, 'kunwariwebpage/forgotpass.html')
 
+def emu_to_inches(emu):
+    return emu / 914400
 def generate_pptx(request):
     prs = Presentation()
+    dimension_width = emu_to_inches(prs.slide_width)
+    dimension_height = emu_to_inches(prs.slide_height)
+    left_offset = 1
+    top_offset = 0.5
     try:
         if request.method == "POST":
             data = json.loads(request.body)
             message = data['message']
-            parts = re.split(r'(?=\b(?:[1-9]|1[0-9]|2[0-3])\. )', message)
-            blank_slide_layout = prs.slide_layouts[0]
+            #parts = re.split(r'(?=\b(?:[1-9]|1[0-9]|2[0-3])\. )', message)
+            parts = re.split(r'<h3>', message)
+            blank_slide_layout = prs.slide_layouts[6]
             save_directory = os.path.join(settings.BASE_DIR, 'media')
             for part in parts:
+                trim_part = re.sub(r'<[^>]+>', '', part)
                 slide = prs.slides.add_slide(blank_slide_layout)
-                left = Inches(3)
-                top = Inches(1)
-                width = Inches(4)
-                height = Inches(1)
+                left = Inches(left_offset)
+                top = Inches(top_offset)
+                width = Inches(dimension_width - 2)
+                height = Inches(dimension_height - 1)
                 txBox = slide.shapes.add_textbox(left, top, width, height)
                 tf = txBox.text_frame
+                tf.word_wrap = True
                 p = tf.add_paragraph()
-                p.text = part
+                p.font.size = Pt(20)
+                p.text = trim_part
             prs.save(os.path.join(save_directory,"output.pptx"))
             return JsonResponse({"message": message}, status=200)
     except Exception as e:
@@ -95,7 +105,10 @@ Bonus Challenge - Automatically generate a challenge from real-world scenarios o
 
 Rewards and Badges - Automatically unlock Achievements based on performance and engagement.
 
+
 """
+#Finally, Format your response in markdown
+#Use this exact structure: use h1 for lesson title, use h3 for the each dashed line
                 #try concatenating the message with the memory and ask another question
                 #data = request.POST.get("prompt")
                 response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')

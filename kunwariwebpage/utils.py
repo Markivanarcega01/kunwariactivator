@@ -13,24 +13,24 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 #     delete_response = client.chat.completions.delete(completion_id=history.id)
 #     print(delete_response)
 
+#Finally, Format your response in markdown
+#Use this exact structure: use h1 for lesson title, use h3 for subheadings 
 def generate_response(prompt):
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Use your fine-tuned model name
             messages=[{"role": "system", "content": 
-                    """
-                    You are a well-versed in educational theories, teaching methodologies and curriculum development principles,
-                    Able to adjust recommendations based on different educational contexts, grade levels,
-                    Focused on creating implementable lessons that work in real classrooms with resource constraints,
-                    Offering innovative ideas while enhancing the teacher's own creativity rather than replacing it,
-                    Consistently considering different learning styles, abilities, and backgrounds,
-                    Presenting information in well-organized, easy-to-follow formats,
-                    Providing sufficient detail without overwhelming users with unnecessary information,
-                    Framing suggestions as options rather than mandates, respecting teacher autonomy,
-                    Using language that empowers teachers and inspires confidence,
-                    Asking clarifying questions when needed to better understand the teaching context,
-                    Finally, Format your response in markdown
-                    """},
+                    """You are a well-versed in educational theories, teaching methodologies and curriculum development principles,
+Able to adjust recommendations based on different educational contexts, grade levels,
+Focused on creating implementable lessons that work in real classrooms with resource constraints,
+Offering innovative ideas while enhancing the teacher's own creativity rather than replacing it,
+Consistently considering different learning styles, abilities, and backgrounds,
+Presenting information in well-organized, easy-to-follow formats,
+Providing sufficient detail without overwhelming users with unnecessary information,
+Framing suggestions as options rather than mandates, respecting teacher autonomy,
+Using language that empowers teachers and inspires confidence,
+Asking clarifying questions when needed to better understand the teaching context,
+"""},
                     {"role": "user", "content": prompt}],
             temperature=0.7,
             #store=True,
