@@ -10,5 +10,5 @@ urlpatterns = [
     path('generate_content/', views.generate_content, name='generate_content'),
     path('generate_facilitator_script/', views.generate_facilitator_script, name='generate_facilitator_script'),
     path('generate_pptx/', views.generate_pptx, name='generate_pptx'),
-    path('download/', views.download_from_media, name="download"),
+    path('download/<str:filename>', views.download_from_media, name="download"),
 ]

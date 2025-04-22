@@ -13,6 +13,7 @@ const prompt = document.querySelector("#prompt");
 const chatresponse = document.querySelector("#chat_response");
 const generatePptx = document.querySelector("#generate-pptx");
 const downloadPptx = document.querySelector('#download-pptx');
+let fileName = ""
 
 // const adminCredentials = {
 //     username: 'admin',
@@ -41,6 +42,7 @@ if (loginBtn) {
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
+    fileName = "lesson_plan.pptx"
     if (chatresponse.innerHTML != "") {
       generatePptx.style.display = "block";
       generateEpisodes.style.display = "block";
@@ -75,6 +77,7 @@ if (submitToChatgpt) {
 if(generateEpisodes){
   generateEpisodes.addEventListener("click", async(e) => {
     e.preventDefault();
+    fileName = "episodes.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
     const response =await fetch("/homepage/generate_episodes/", {
@@ -105,6 +108,7 @@ if(generateEpisodes){
 if(generateContent){
   generateContent.addEventListener("click", async(e) => {
     e.preventDefault();
+    fileName = "content.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
     const response =await fetch("/homepage/generate_content/", {
@@ -135,6 +139,7 @@ if(generateContent){
 if(generateFacilitatorScript){
   generateFacilitatorScript.addEventListener("click", async(e) => {
     e.preventDefault();
+    fileName = "facilitator_script.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
     const response =await fetch("/homepage/generate_facilitator_script/", {
@@ -165,28 +170,37 @@ if(generateFacilitatorScript){
 if(generatePptx){
   generatePptx.addEventListener("click", async(e) => {
     e.preventDefault();
+    
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
-    const response =await fetch("/homepage/generate_pptx/", {
+    await fetch("/homepage/generate_pptx/", {
       method: "POST",
       headers: { 
         "X-CSRFToken": csrf_token,
         "Content-type": "application/json" },
-      body: JSON.stringify({ message: chatresponse.innerHTML }),
-    })
-    console.log(response)
+      body: JSON.stringify({ message: chatresponse.innerHTML, filename:fileName }),
+    }).then(response => response.json())
+      .then(data =>{
+        if(!downloadPptx.checkVisibility()){
+          downloadPptx.style.display = "block";
+        }
+        downloadPptx.setAttribute('filename', data.filename);
+      })
   })
 }
 
 if(downloadPptx){
   downloadPptx.addEventListener("click", (e)=>{
     e.preventDefault()
-    const url = '/homepage/download/'
+    let fileNameAttribute = downloadPptx.getAttribute('filename')
+    const url = `/homepage/download/${fileNameAttribute}`
     const a = document.createElement('a');
     a.href = url;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    downloadPptx.removeAttribute('filename')
+    downloadPptx.style.display = "none"
   })
 }
 

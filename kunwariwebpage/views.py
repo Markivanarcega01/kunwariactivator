@@ -150,48 +150,48 @@ def generate_pptx(request):
             message = data['message']
             #parts = re.split(r'(?=\b(?:[1-9]|1[0-9]|2[0-3])\. )', message)
             #parts = re.split(r'<h3>', message)
+            fileName = data['filename']
+            print(fileName)
             parts = re.split('<hr>', message)
             blank_slide_layout = prs.slide_layouts[6]
-            save_directory = os.path.join(settings.BASE_DIR, 'media')
-            get_directory = os.path.join(save_directory, "output.pptx")
+            #save_directory = os.path.join(settings.BASE_DIR, 'media')
             #save_directory = os.path.join(os.path.expanduser("~"),"Downloads")
-            # for part in parts:
-            #     trim_part = re.sub(r'<[^>]+>', '', part)
-            #     slide = prs.slides.add_slide(blank_slide_layout)
-            #     left = Inches(left_offset)
-            #     top = Inches(top_offset)
-            #     width = Inches(dimension_width - 2)
-            #     height = Inches(dimension_height - 1)
-            #     txBox = slide.shapes.add_textbox(left, top, width, height)
-            #     tf = txBox.text_frame
-            #     tf.word_wrap = True
-            #     p = tf.add_paragraph()
-            #     #p.font.size = Pt(20)
-            #     p.text = trim_part
-            #     tf.fit_text()
-
-            #For testing
-            slide = prs.slides.add_slide(blank_slide_layout)
-            left = Inches(left_offset)
-            top = Inches(top_offset)
-            width = Inches(dimension_width - 2)
-            height = Inches(dimension_height - 1)
-            txBox = slide.shapes.add_textbox(left, top, width, height)
-            tf = txBox.text_frame
-            tf.word_wrap = True
-            p = tf.add_paragraph()
-            p.text = "Mark ivan arcega"
-            #prs.save(os.path.join(save_directory,"output.pptx"))
-            prs.save(get_directory)
-            return JsonResponse({"message": message}, status=200)
+            for part in parts:
+                trim_part = re.sub(r'<[^>]+>', '', part)
+                slide = prs.slides.add_slide(blank_slide_layout)
+                left = Inches(left_offset)
+                top = Inches(top_offset)
+                width = Inches(dimension_width - 2)
+                height = Inches(dimension_height - 1)
+                txBox = slide.shapes.add_textbox(left, top, width, height)
+                tf = txBox.text_frame
+                tf.word_wrap = True
+                p = tf.add_paragraph()
+                #p.font.size = Pt(20)
+                p.text = trim_part
+                #tf.fit_text()
+            prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
+            return JsonResponse({"message": message, "filename":fileName}, status=200)
         
+            #For testing
+            # slide = prs.slides.add_slide(blank_slide_layout)
+            # left = Inches(left_offset)
+            # top = Inches(top_offset)
+            # width = Inches(dimension_width - 2)
+            # height = Inches(dimension_height - 1)
+            # txBox = slide.shapes.add_textbox(left, top, width, height)
+            # tf = txBox.text_frame
+            # tf.word_wrap = True
+            # p = tf.add_paragraph()
+            # p.text = "Mark ivan arcega"
+            #prs.save(os.path.join(save_directory,"output.pptx"))
             #return JsonResponse({"message": message}, status=200)
     except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     
-def download_from_media(request):
-     file_path = os.path.join(settings.MEDIA_ROOT, "output.pptx")
+def download_from_media(request, filename):
+     file_path = os.path.join(settings.MEDIA_ROOT, filename)
      try:
-        return FileResponse(open(file_path,'rb'),as_attachment=True, filename="Sample.pptx")
+        return FileResponse(open(file_path,'rb'),as_attachment=True, filename=filename)
      except:
         raise Http404("File not found")
