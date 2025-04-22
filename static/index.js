@@ -13,6 +13,7 @@ const prompt = document.querySelector("#prompt");
 const chatresponse = document.querySelector("#chat_response");
 const generatePptx = document.querySelector("#generate-pptx");
 const downloadPptx = document.querySelector('#download-pptx');
+const message = document.querySelector("#message");
 let fileName = ""
 
 // const adminCredentials = {
@@ -185,6 +186,11 @@ if(generatePptx){
           downloadPptx.style.display = "block";
         }
         downloadPptx.setAttribute('filename', data.filename);
+        message.style.display = "block"
+        message.textContent = `${data.message}`
+        setTimeout(()=>{
+          message.style.display = "none"
+        },3000)
       })
   })
 }

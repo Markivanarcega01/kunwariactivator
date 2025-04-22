@@ -12,6 +12,7 @@ from pptx.util import Inches, Pt
 from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE
 import re
 
+
 def index(request):
     if 'user' in request.session:
         db = get_user_model()
@@ -171,7 +172,7 @@ def generate_pptx(request):
                 p.text = trim_part
                 #tf.fit_text()
             prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
-            return JsonResponse({"message": message, "filename":fileName}, status=200)
+            return JsonResponse({"message": "File generated", "filename":fileName}, status=200)
         
             #For testing
             # slide = prs.slides.add_slide(blank_slide_layout)
