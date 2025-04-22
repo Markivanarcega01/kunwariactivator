@@ -6,12 +6,13 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const loginSubmit = document.getElementById("login-submit");
 const submitToChatgpt = document.querySelector("#submit-to-chatgpt");
-const generatePptx = document.querySelector("#generate-pptx");
 const generateEpisodes = document.querySelector("#generate-episodes");
 const generateFacilitatorScript = document.querySelector("#generate-facilitator-script");
 const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
 const chatresponse = document.querySelector("#chat_response");
+const generatePptx = document.querySelector("#generate-pptx");
+const downloadPptx = document.querySelector('#download-pptx');
 
 // const adminCredentials = {
 //     username: 'admin',
@@ -173,7 +174,19 @@ if(generatePptx){
         "Content-type": "application/json" },
       body: JSON.stringify({ message: chatresponse.innerHTML }),
     })
-    //console.log(response)
+    console.log(response)
+  })
+}
+
+if(downloadPptx){
+  downloadPptx.addEventListener("click", (e)=>{
+    e.preventDefault()
+    const url = '/homepage/download/'
+    const a = document.createElement('a');
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   })
 }
 
