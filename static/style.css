@@ -315,9 +315,19 @@ form {
   color: #333;
   width: 600px;
   max-width: 600px;
-  height: 675px;
+  height: 620px;
   text-align: left;
   overflow-y: auto;
+}
+.body-index .message-download {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.body-index .message-download #download-pptx {
+  margin-left: 8px;
+  width: 60%;
 }
 @media screen and (max-width: 650px) {
   .body-index {
