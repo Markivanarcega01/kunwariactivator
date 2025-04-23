@@ -171,7 +171,6 @@ if(generateFacilitatorScript){
 if(generatePptx){
   generatePptx.addEventListener("click", async(e) => {
     e.preventDefault();
-    
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
     await fetch("/homepage/generate_pptx/", {
@@ -206,7 +205,7 @@ if(downloadPptx){
     a.click();
     document.body.removeChild(a);
     downloadPptx.removeAttribute('filename')
-    downloadPptx.style.display = "none"
+    //downloadPptx.style.display = "none"
   })
 }
 
