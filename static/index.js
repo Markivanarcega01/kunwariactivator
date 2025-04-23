@@ -39,12 +39,12 @@ if (loginBtn) {
     container.classList.remove("active");
   });
 }
-
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
     fileName = "lesson_plan.pptx"
-    if (chatresponse.innerHTML != "") {
+    if (chatresponse.innerHTML != " ") {
+      console.log("ivan too")
       generatePptx.style.display = "block";
       generateEpisodes.style.display = "block";
       generateContent.style.display = "block";
