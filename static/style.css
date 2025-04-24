@@ -329,6 +329,18 @@ form {
   margin-left: 8px;
   width: 60%;
 }
+.body-index .logo button {
+  background-color: transparent;
+  border: transparent;
+}
+.body-index .logo img {
+  width: 64px;
+  height: 64px;
+}
+.body-index .message-download button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 @media screen and (max-width: 650px) {
   .body-index {
     display: flex;

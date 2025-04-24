@@ -181,8 +181,8 @@ if(generatePptx){
       body: JSON.stringify({ message: chatresponse.innerHTML, filename:fileName }),
     }).then(response => response.json())
       .then(data =>{
-        if(!downloadPptx.checkVisibility()){
-          downloadPptx.style.display = "block";
+        if(downloadPptx.disabled){
+          downloadPptx.disabled = false;
         }
         downloadPptx.setAttribute('filename', data.filename);
         message.style.display = "block"
