@@ -181,14 +181,14 @@ if(generatePptx){
       body: JSON.stringify({ message: chatresponse.innerHTML, filename:fileName }),
     }).then(response => response.json())
       .then(data =>{
-        if(downloadPptx.disabled){
-          downloadPptx.disabled = false;
-        }
+        //downloadPptx.style.display = "block";
+        downloadPptx.disabled = false
         downloadPptx.setAttribute('filename', data.filename);
-        message.style.display = "block"
+        //message.style.display = "block"
         message.textContent = `${data.message}`
         setTimeout(()=>{
-          message.style.display = "none"
+          //message.style.display = "none"
+          message.textContent = ""
         },3000)
       })
   })
@@ -206,6 +206,7 @@ if(downloadPptx){
     document.body.removeChild(a);
     downloadPptx.removeAttribute('filename')
     //downloadPptx.style.display = "none"
+    downloadPptx.disabled = true
   })
 }
 
