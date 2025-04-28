@@ -47,8 +47,14 @@ if (submitToChatgpt) {
       console.log("ivan too")
       generatePptx.style.display = "block";
       generateEpisodes.style.display = "block";
-      generateContent.style.display = "block";
-      generateFacilitatorScript.style.display = "block";
+      //generateContent.style.display = "block";
+      //generateFacilitatorScript.style.display = "block";
+    }
+    if(generateContent.checkVisibility()){
+      generateContent.style.display = "none"
+    }
+    if(generateFacilitatorScript.checkVisibility()){
+      generateFacilitatorScript.style.display = "none"
     }
     const response = await fetch("/homepage/chatbot/", {
       method: "POST",
@@ -78,6 +84,7 @@ if (submitToChatgpt) {
 if(generateEpisodes){
   generateEpisodes.addEventListener("click", async(e) => {
     e.preventDefault();
+    generateContent.style.display = "block";
     fileName = "episodes.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
@@ -109,6 +116,7 @@ if(generateEpisodes){
 if(generateContent){
   generateContent.addEventListener("click", async(e) => {
     e.preventDefault();
+    generateFacilitatorScript.style.display = "block";
     fileName = "content.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
