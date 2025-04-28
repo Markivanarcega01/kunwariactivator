@@ -130,7 +130,7 @@ def generate_facilitator_script(request):
             data = json.loads(request.body)
             message = data['message']
             message += """Please generate a complete facilitator script for the Episode slides above.
-Do not forgot to put <hr> to separate the topics
+Do not forgot to put <hr> to separate the topics 
             """
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
@@ -144,7 +144,7 @@ def generate_pptx(request):
     dimension_width = emu_to_inches(prs.slide_width)
     dimension_height = emu_to_inches(prs.slide_height)
     left_offset = 1
-    top_offset = 0.5
+    top_offset = 2
     try:
         if request.method == "POST":
             data = json.loads(request.body)
@@ -152,41 +152,68 @@ def generate_pptx(request):
             #parts = re.split(r'(?=\b(?:[1-9]|1[0-9]|2[0-3])\. )', message)
             #parts = re.split(r'<h3>', message)
             fileName = data['filename']
-            print(fileName)
             parts = re.split('<hr>', message)
             blank_slide_layout = prs.slide_layouts[6]
             #save_directory = os.path.join(settings.BASE_DIR, 'media')
             #save_directory = os.path.join(os.path.expanduser("~"),"Downloads")
-            for part in parts:
-                trim_part = re.sub(r'<[^>]+>', '', part)
-                slide = prs.slides.add_slide(blank_slide_layout)
-                left = Inches(left_offset)
-                top = Inches(top_offset)
-                width = Inches(dimension_width - 2)
-                height = Inches(dimension_height - 1)
-                txBox = slide.shapes.add_textbox(left, top, width, height)
-                tf = txBox.text_frame
-                tf.word_wrap = True
-                p = tf.add_paragraph()
-                #p.font.size = Pt(20)
-                p.text = trim_part
-                #tf.fit_text()
-            prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
-            return JsonResponse({"message": "File generated", "filename":fileName}, status=200)
+            # for part in parts:
+            #     trim_part = re.sub(r'<[^>]+>', '', part)
+            #     slide = prs.slides.add_slide(blank_slide_layout)
+            #     left = Inches(left_offset)
+            #     top = Inches(top_offset)
+            #     width = Inches(dimension_width - 2)
+            #     height = Inches(dimension_height - 1)
+            #     txBox = slide.shapes.add_textbox(left, top, width, height)
+            #     tf = txBox.text_frame
+            #     tf.word_wrap = True
+            #     p = tf.add_paragraph()
+            #     #p.font.size = Pt(20)
+            #     p.text = trim_part
+            #     #tf.fit_text()
+            # prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
+            # return JsonResponse({"message": "File generated", "filename":fileName}, status=200)
         
             #For testing
-            # slide = prs.slides.add_slide(blank_slide_layout)
-            # left = Inches(left_offset)
-            # top = Inches(top_offset)
-            # width = Inches(dimension_width - 2)
-            # height = Inches(dimension_height - 1)
-            # txBox = slide.shapes.add_textbox(left, top, width, height)
-            # tf = txBox.text_frame
-            # tf.word_wrap = True
-            # p = tf.add_paragraph()
-            # p.text = "Mark ivan arcega"
-            #prs.save(os.path.join(save_directory,"output.pptx"))
-            #return JsonResponse({"message": message}, status=200)
+            """
+            Find the HTML tags =  r'<(h[1-3]|p)>(.*?)</\1>', ['h4', 'Key Plot/Conflict/Obstacle']
+            Use the index[0] as indicator
+                If tag is h1,h2,h3 use layout[5] Title only
+                If tag is h4,h5,h6 use layout[1] Title and content
+                If tag is p, insert it to layout[1]
+            Finally, trim each sentence before inserting to pptx
+            """
+            #pattern = r'<(h[1-6]|p)>(.*?)</\1>'
+            pattern = r'<([a-zA-Z][a-zA-Z0-9]*)[^>]*>(.*?)</\1>'
+            title_slide = prs.slides.add_slide(prs.slide_layouts[0])
+            run_once = True
+            for part in parts:
+                slide = prs.slides.add_slide(prs.slide_layouts[1])
+                content_placeholder = slide.placeholders[1]
+                matches = re.findall(pattern, part) #[('h1', 'Title One'), ('p', 'This is a paragraph.'), ('h2', 'Subtitle'), ('h3', 'Section')]
+                #print(matches)
+                for i in matches: 
+                    print(i)
+                    if run_once:
+                         title_slide.shapes.title.text = i[1]
+                         run_once = False
+                    #['h4', 'Key Plot/Conflict/Obstacle']
+                    if i[0] in ['h1','h2', 'h3', 'h4', 'h5', 'h6']:
+                        #print('Title Match')
+                        slide.shapes.title.text = i[1]
+                        
+                    #elif match[0] in ['h4', 'h5', 'h6', 'p']:
+                    # elif i[0] in ['h4', 'h5', 'h6']:
+                    #     #slide = prs.slides.add_slide(prs.slide_layouts[1])
+                    #     print('Subheading match')
+                    #     slide.shapes.title.text = i[1]
+                    else:
+                        trim_part = re.sub(r'<[^>]+>', '', i[1])
+                        content_placeholder.text = trim_part
+                        
+
+            prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
+            return JsonResponse({"message": "File generated", "filename": fileName}, status=200)
+              
     except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     
