@@ -28,6 +28,22 @@ let fileName = ""
 //     }
 // })
 
+//Revise this, change the parameter into string instead of array
+// function format_chatgpt_response(sentences){
+//   //const heading = /^(###.*\n){3}/gm;
+//   const heading = /^(###)/;
+//   const bold = /^\*\*.*\*\*$/;
+//   sentences.forEach(element => {
+//     if(element.match(heading) || element.match(bold)){
+//       cleanData = element.replace(/#+/,"")
+//       addTag = `<h3>${cleanData}</h3>`
+//     }else{
+//       addTag = `<p>${element}</p>`
+//       return addTag
+//     }
+//   });
+// }
+
 if (registerBtn) {
   registerBtn.addEventListener("click", (e) => {
     container.classList.add("active");
@@ -61,7 +77,7 @@ if (submitToChatgpt) {
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ message: prompt.value }),
     });
-    //console.log(response);
+    console.log(response);
 
     let reader = response.body.getReader();
 
@@ -70,9 +86,13 @@ if (submitToChatgpt) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
+      //console.log(output)
       chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
+        //let splitted = output.split("\n")
+        //console.log(output)
+        //format_chatgpt_response(splitted)
         console.log(marked.parse(output));
         return;
       }
@@ -84,6 +104,7 @@ if (submitToChatgpt) {
 if(generateEpisodes){
   generateEpisodes.addEventListener("click", async(e) => {
     e.preventDefault();
+    submitToChatgpt.style.display = "none"
     generateContent.style.display = "block";
     fileName = "episodes.pptx"
     //console.log(chatresponse.textContent)
@@ -116,6 +137,7 @@ if(generateEpisodes){
 if(generateContent){
   generateContent.addEventListener("click", async(e) => {
     e.preventDefault();
+    generateEpisodes.style.display = "none"
     generateFacilitatorScript.style.display = "block";
     fileName = "content.pptx"
     //console.log(chatresponse.textContent)
@@ -148,6 +170,7 @@ if(generateContent){
 if(generateFacilitatorScript){
   generateFacilitatorScript.addEventListener("click", async(e) => {
     e.preventDefault();
+    generateContent.style.display = "none"
     fileName = "facilitator_script.pptx"
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector('input[name=csrfmiddlewaretoken]').value
