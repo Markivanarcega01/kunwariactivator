@@ -17,6 +17,10 @@ const generatePptx = document.querySelector("#generate-pptx");
 const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
 let fileName = "";
+
+/**
+ * Save state is used for regeneration of the parts(lesson plan, episodes, etc.)
+ */
 let lessonPlanSaveState = ""
 let episodesSaveState = ""
 let contentSaveState = ""
@@ -106,17 +110,18 @@ if (submitToChatgpt) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
+      message.textContent = "Generating please wait..."
       //console.log(output)
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        //let splitted = output.split("\n")
         lessonPlanSaveState = output
         console.log(output)
         chatresponse.innerHTML = format_chatgpt_response(output);
-        //console.log(format_chatgpt_response(output));
-        //console.log(output)
-        //console.log(marked.parse(output));
+        setTimeout(() => {
+          //message.style.display = "none"
+          message.textContent = "";
+        }, 3000);
         return;
       }
     }
@@ -150,12 +155,17 @@ if (generateEpisodes) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
+      message.textContent = "Generating please wait..."
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
         episodesSaveState = output
         console.log(output);
         chatresponse.innerHTML = format_chatgpt_response(output);
+        setTimeout(() => {
+          //message.style.display = "none"
+          message.textContent = "";
+        }, 3000);
         return;
       }
     }

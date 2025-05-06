@@ -325,10 +325,11 @@ form {
   gap: 10px;
 }
 
-.body-index .message-download #download-pptx {
+.body-index .message-download .btn-under-gptresponse {
   margin-left: 8px;
-  width: 60%;
+  width: 30%;
 }
+
 .body-index .logo button {
   background-color: transparent;
   border: transparent;
