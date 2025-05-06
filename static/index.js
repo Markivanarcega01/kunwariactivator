@@ -199,12 +199,17 @@ if (generateContent) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
+      message.textContent = "Generating please wait..."
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
         contentSaveState = output
         console.log(output);
         chatresponse.innerHTML = format_chatgpt_response(output);
+        setTimeout(() => {
+          //message.style.display = "none"
+          message.textContent = "";
+        }, 3000);
         return;
       }
     }
@@ -237,12 +242,17 @@ if (generateFacilitatorScript) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
+      message.textContent = "Generating please wait..."
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
         facilitatorScriptSaveState = output
         console.log(output);
         chatresponse.innerHTML = format_chatgpt_response(output);
+        setTimeout(() => {
+          //message.style.display = "none"
+          message.textContent = "";
+        }, 3000);
         return;
       }
     }
