@@ -68,7 +68,7 @@ Life Skills, Soft Skills, Creative Skills, 5 C’s of 21st-century learning Appl
 
 ### Main Challenge (Summative Assessment)  - Create a final stage with a BOSS challenge that integrates all learning outcomes.
 
-### What’s In It For You?/ Why is this relevant? - Automatically generate answers to this question from real-world scenarios or UN SDG 
+### What’s In It For You?/ Why is this relevant? - Automatically generate answers to this question from real-world scenarios or UN SDG or the 5Cs of 21st century Learning
 
 ### Bonus Challenge - Automatically generate a challenge from real-world scenarios or UN SDG that students can solve from what they’ve learned from the topic - MAKE THIS PISA CREATIVE THINKING FORMAT 
 
@@ -133,7 +133,37 @@ def generate_episodes(request):
             data = json.loads(request.body)
             #Message should be the response of the bot + the Episodes
             message = data['message']
-            message += """Please transform the lesson plan above following the format of Episodes:
+            message += """
+Follow this rules when generating the episode:
+*Maintain narrative continuity with the key story/premise
+*Specify time allocations and technology requirements
+*Suggest physical and digital resource alternatives
+
+### Episode 1: "Concept Introduction" - Create interactive slides that:
+*Introduce the key concepts and foundational knowledge
+*Establish the narrative framework and character roles
+*Include 3-5 concrete examples that contextualize the content
+*End with a mini-challenge that tests basic concept understanding
+
+### Episode 2: "Skill-Building Activities" - Develop activity-focused slides that:
+*Present 2-3 scaffolded activities for each key concept
+*Incorporate player-type variations (competitive, achievement, exploratory, collaborative)
+*Connect activities directly to the story and to real-world applications
+
+### Episode 3: "Applied Learning Assessments" - Design assessment slides that:
+*Frame assessments as narrative missions with clear objectives
+*Include both individual and group assessment options
+*Provide rubrics that align with learning objectives
+*Offer differentiated assessment paths based on student strengths
+
+### Episode 4: "Critical Reflection & Extension" - Create culminating slides that:
+*Guide structured reflection on content application
+*Present the "boss challenge" with real-world relevance
+*Incorporate societal impact connections and 21st century skills application
+*Include extension resources for continued exploration
+"""
+            
+            """Please transform the lesson plan above following the format of Episodes:
 Episode 1: Gamified Lessons - revise the slides from lesson plan.
 Episode 2: Gamified Teaching and Learning Activities - Create slides for interactive activities. 
 Episode 3: Gamified Assessments - Create slides for narrative-based assessments. 
@@ -158,7 +188,34 @@ def generate_content(request):
         if request.method == "POST":
             data = json.loads(request.body)
             message = data['message']
-            message += """Please generate detailed content for the Episode slides above."""
+            message += """
+Please generate comprehensive slide content for each episode, including:
+### Episode 1: "Concept Introduction" - Create detailed slides with:
+- Opening slide with compelling hook and visual theme
+- Content slides for each key concept (5-8 slides per concept)
+- Visual examples and case studies with explanatory text
+- Interactive elements and discussion prompts
+- Mini-challenge slide with instructions and assessment criteria
+### Episode 2: "Skill-Building Activities" - Develop activity slides with:
+- Activity overview and learning connection for each activity
+- Step-by-step instructions with visuals
+- Player-type variations with differentiated instructions
+- Printable worksheets and digital templates
+- Activity debriefing questions
+### Episode 3: "Applied Learning Assessments" - Design assessment slides with:
+- Assessment narrative framing and mission objectives
+- Clear assessment criteria and expectations
+- Individual and group assessment options
+- Rubric slides with performance indicators
+- Self-assessment components
+### Episode 4: "Critical Reflection & Extension" - Create reflection slides with:
+- Guided reflection prompts and documentation templates
+- Boss challenge instructions and success criteria
+- Real-world application connections
+- Extension options and resources
+- Celebration and accomplishment recognition
+"""  
+            """Please generate detailed content for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
      except Exception as e:
@@ -171,7 +228,51 @@ def generate_facilitator_script(request):
         if request.method == "POST":
             data = json.loads(request.body)
             message = data['message']
-            message += """Please generate a complete facilitator script for the Episode slides above."""
+            message += """
+Format all materials for easy reference during implementation, with clear section headings, visual cues, and a consistent layout that distinguishes between:
+*Essential instructions (must do)
+*Optional enhancements (could do)
+*Troubleshooting tips (if needed)
+
+Based on the episodic lesson plan developed, create comprehensive facilitator materials for effective implementation:
+
+### Facilitator Overview:
+*Provide a 1-page summary of the entire lesson sequence
+*Include learning objectives, time requirements, and required preparation
+*Outline technology and resource needs with alternatives
+
+For Each Episode (1-4), Create Detailed Implementation Guides:
+### Pre-Session Preparation:
+- Materials checklist (digital and physical)
+- Room/space setup instructions
+- Technology setup and troubleshooting tips
+- Pre-session facilitator knowledge check
+### Step-by-Step Facilitation Script:
+- Opening hooks and engagement strategies
+- Transition scripts between activities
+- Sample dialogue with anticipated student responses
+- Time allocations for each segment (minimum/ideal)
+- Adaptation notes for different learning contexts
+### Student Support Guide:
+- Common misconceptions and how to address them
+- Differentiation strategies for various learning needs
+- Extension prompts for advanced learners
+- Support scaffolds for struggling learners
+### Assessment Implementation:
+- Detailed evaluation criteria and success indicators
+- Observation prompts during activities
+- Feedback delivery scripts
+- Documentation strategies
+### Reflection and Closure:
+- Guided discussion questions with sample responses
+- Consolidation strategies for key concepts
+- Bridge statements to subsequent episodes
+- Follow-up activities and homework options
+"""
+            
+            
+            
+            """Please generate a complete facilitator script for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
      except Exception as e:
@@ -227,7 +328,7 @@ def generate_pptx(request):
             title_slide = prs.slides.add_slide(prs.slide_layouts[0])
             run_once = True
             for part in parts:
-                if part == "":
+                if part == " ":
                     continue
                 if run_once == False:
                     slide = prs.slides.add_slide(prs.slide_layouts[1])
