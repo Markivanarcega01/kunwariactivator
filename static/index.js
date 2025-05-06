@@ -17,6 +17,10 @@ const generatePptx = document.querySelector("#generate-pptx");
 const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
 let fileName = "";
+let lessonPlanSaveState = ""
+let episodesSaveState = ""
+let contentSaveState = ""
+let facilitatorScriptSaveState = ""
 
 // const adminCredentials = {
 //     username: 'admin',
@@ -39,15 +43,20 @@ function format_chatgpt_response(paragraph) {
    * Headings = Starts with ### and ends with \n
    */
   let sentences = paragraph.split("\n");
-  //console.log(sentences);
+  //console.log(sentences)
+
   for (let i = 0; i < sentences.length; i++) {
+    console.log(sentences[i])
     let trimmed_sentence = sentences[i].replace(/[#*]/g,"");
-    if (sentences[i].match(headingOrBold)) {
-      sentences[i] = sentences[i].replace(headingOrBold, `<h3>${trimmed_sentence}</h3>`);
-    } else if (sentences[i] == "") {
+    let trimmed_whitespace = sentences[i].trim()
+    if (trimmed_whitespace.match(headingOrBold)) {
+      sentences[i] = sentences[i].replace(sentences[i], `<h3>${trimmed_sentence}</h3>`);
+    } else if (sentences[i] == "" && sentences[i+1]) {
+      sentences[i] = sentences[i].replace(sentences[i], `<hr>`);
+    } else if (sentences[i].match(hrAndDash)) {
+      sentences[i] = sentences[i].replace(sentences[i], `<hr>`);
+    } else if(sentences[i] == ""){
       continue;
-    } else if (sentences[i] == "<hr>" || sentences[i] == "---") {
-      sentences[i] = sentences[i].replace(hrAndDash, `<hr>`);
     } else {
       sentences[i] = sentences[i].replace(sentences[i], `<p>${trimmed_sentence}</p>`);
     }
@@ -102,9 +111,10 @@ if (submitToChatgpt) {
 
       if (done) {
         //let splitted = output.split("\n")
-        //console.log(output)
+        lessonPlanSaveState = output
+        console.log(output)
         chatresponse.innerHTML = format_chatgpt_response(output);
-        console.log(format_chatgpt_response(output));
+        //console.log(format_chatgpt_response(output));
         //console.log(output)
         //console.log(marked.parse(output));
         return;
@@ -116,7 +126,7 @@ if (submitToChatgpt) {
 if (generateEpisodes) {
   generateEpisodes.addEventListener("click", async (e) => {
     e.preventDefault();
-    submitToChatgpt.style.display = "none";
+    //submitToChatgpt.style.display = "none";
     generateContent.style.display = "block";
     fileName = "episodes.pptx";
     //console.log(chatresponse.textContent)
@@ -129,7 +139,8 @@ if (generateEpisodes) {
         "X-CSRFToken": csrf_token,
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ message: chatresponse.textContent }),
+      //body: JSON.stringify({ message: chatresponse.textContent }),
+      body: JSON.stringify({ message: lessonPlanSaveState }),
     });
     console.log(chatresponse.textContent);
     let reader = response.body.getReader();
@@ -139,10 +150,12 @@ if (generateEpisodes) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      chatresponse.innerHTML = marked.parse(output);
+      //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        console.log(marked.parse(output));
+        episodesSaveState = output
+        console.log(output);
+        chatresponse.innerHTML = format_chatgpt_response(output);
         return;
       }
     }
@@ -152,7 +165,7 @@ if (generateEpisodes) {
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
-    generateEpisodes.style.display = "none";
+    //generateEpisodes.style.display = "none";
     generateFacilitatorScript.style.display = "block";
     fileName = "content.pptx";
     //console.log(chatresponse.textContent)
@@ -165,7 +178,8 @@ if (generateContent) {
         "X-CSRFToken": csrf_token,
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ message: chatresponse.textContent }),
+      //body: JSON.stringify({ message: chatresponse.textContent }),
+      body: JSON.stringify({ message: episodesSaveState }),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -175,10 +189,12 @@ if (generateContent) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      chatresponse.innerHTML = marked.parse(output);
+      //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        console.log(marked.parse(output));
+        contentSaveState = output
+        console.log(output);
+        chatresponse.innerHTML = format_chatgpt_response(output);
         return;
       }
     }
@@ -188,7 +204,7 @@ if (generateContent) {
 if (generateFacilitatorScript) {
   generateFacilitatorScript.addEventListener("click", async (e) => {
     e.preventDefault();
-    generateContent.style.display = "none";
+    //generateContent.style.display = "none";
     fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
@@ -200,7 +216,8 @@ if (generateFacilitatorScript) {
         "X-CSRFToken": csrf_token,
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ message: chatresponse.textContent }),
+      //body: JSON.stringify({ message: chatresponse.textContent }),
+      body: JSON.stringify({ message: contentSaveState }),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -210,10 +227,12 @@ if (generateFacilitatorScript) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      chatresponse.innerHTML = marked.parse(output);
+      //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        console.log(marked.parse(output));
+        facilitatorScriptSaveState = output
+        console.log(output);
+        chatresponse.innerHTML = format_chatgpt_response(output);
         return;
       }
     }
