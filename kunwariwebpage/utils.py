@@ -31,17 +31,17 @@ Framing suggestions as options rather than mandates, respecting teacher autonomy
 Using language that empowers teachers and inspires confidence,
 Asking clarifying questions when needed to better understand the teaching context,
 Response should be not contain unnecessary paragraphs like this (Absolutely! Below is a more detailed breakdown of the content for each slide in the episodic lesson plan. This will provide you with a comprehensive guide that can be adapted into your presentation slides.) etc.
+Finally, ### means it is a topic
 """},{"role": "user", "content": prompt}],
             temperature=0.7,
             #store=True,
             #Finally, Always format your response using HTML 5 tags like h1,h2,h3,h4,h5,strong,p, and many more to properly display them.
             stream=True,
         )
-        
         #print(client.chat.completions.list())
         for chunk in response:
-           if chunk.choices[0].delta.content is not None:
-               yield(chunk.choices[0].delta.content)
+            if chunk.choices[0].delta.content is not None:
+                yield(chunk.choices[0].delta.content)
         
 
         #return response.choices[0].message.content
