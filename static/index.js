@@ -12,19 +12,40 @@ const generateFacilitatorScript = document.querySelector(
 );
 const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
-const chatresponse = document.querySelector("#chat_response");
+//const chatresponse = document.querySelector("#chat_response");
+const lessonResponse = document.querySelector("#lesson_plan");
+const episodeResponse = document.querySelector("#episodes");
+const contentResponse = document.querySelector("#content");
+const facilitatorScriptResponse = document.querySelector("#facilitator_script");
 const generatePptx = document.querySelector("#generate-pptx");
 const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
-let fileName = "";
+let fileName = "lesson_plan.pptx";
+let activeTab = document.querySelector("#lesson_plan");
 
-/**
- * Save state is used for regeneration of the parts(lesson plan, episodes, etc.)
- */
-let lessonPlanSaveState = ""
-let episodesSaveState = ""
-let contentSaveState = ""
-let facilitatorScriptSaveState = ""
+const tabs = document.querySelectorAll(".tabs-heading li");
+const contents = document.querySelectorAll(".tabs-body div");
+
+if (tabs) {
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const targetId = tab.getAttribute("data-target");
+
+      contents.forEach((content) => {
+        if(content.id == targetId && content.textContent != ""){
+          console.log("active tab found and has content")
+          fileName = `${content.id}.pptx`
+          activeTab = content
+          generatePptx.disabled = false;
+        }else if(content.id == targetId && content.textContent == ""){
+          console.log("active tab has no content")
+          generatePptx.disabled = true;
+        }
+        content.hidden = content.id !== targetId;
+      });
+    });
+  });
+}
 
 // const adminCredentials = {
 //     username: 'admin',
@@ -50,19 +71,25 @@ function format_chatgpt_response(paragraph) {
   //console.log(sentences)
 
   for (let i = 0; i < sentences.length; i++) {
-    console.log(sentences[i])
-    let trimmed_sentence = sentences[i].replace(/[#*]/g,"");
-    let trimmed_whitespace = sentences[i].trim()
+    console.log(sentences[i]);
+    let trimmed_sentence = sentences[i].replace(/[#*]/g, "");
+    let trimmed_whitespace = sentences[i].trim();
     if (trimmed_whitespace.match(headingOrBold)) {
-      sentences[i] = sentences[i].replace(sentences[i], `<h3>${trimmed_sentence}</h3>`);
-    } else if (sentences[i] == "" && sentences[i+1]) {
+      sentences[i] = sentences[i].replace(
+        sentences[i],
+        `<h3>${trimmed_sentence}</h3>`
+      );
+    } else if (sentences[i] == "" && sentences[i + 1]) {
       sentences[i] = sentences[i].replace(sentences[i], `<hr>`);
     } else if (sentences[i].match(hrAndDash)) {
       sentences[i] = sentences[i].replace(sentences[i], `<hr>`);
-    } else if(sentences[i] == ""){
+    } else if (sentences[i] == "") {
       continue;
     } else {
-      sentences[i] = sentences[i].replace(sentences[i], `<p>${trimmed_sentence}</p>`);
+      sentences[i] = sentences[i].replace(
+        sentences[i],
+        `<p>${trimmed_sentence}</p>`
+      );
     }
   }
   return sentences.join("\n");
@@ -82,10 +109,11 @@ if (loginBtn) {
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
-    fileName = "lesson_plan.pptx";
-    if (chatresponse.innerHTML != " ") {
+    //fileName = "lesson_plan.pptx";
+    if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
-      generatePptx.style.display = "block";
+      //generatePptx.style.display = "block";
+      generatePptx.disabled = false;
       generateEpisodes.style.display = "block";
       //generateContent.style.display = "block";
       //generateFacilitatorScript.style.display = "block";
@@ -110,14 +138,14 @@ if (submitToChatgpt) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait..."
+      message.textContent = "Generating please wait...";
       //console.log(output)
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        lessonPlanSaveState = output
-        console.log(output)
-        chatresponse.innerHTML = format_chatgpt_response(output);
+        //lessonPlanSaveState = output;
+        console.log(output);
+        lessonResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -132,8 +160,9 @@ if (generateEpisodes) {
   generateEpisodes.addEventListener("click", async (e) => {
     e.preventDefault();
     //submitToChatgpt.style.display = "none";
+    generatePptx.disabled = false;
     generateContent.style.display = "block";
-    fileName = "episodes.pptx";
+    //fileName = "episodes.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -145,9 +174,9 @@ if (generateEpisodes) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: lessonPlanSaveState }),
+      body: JSON.stringify({ message: lessonResponse.textContent}),
     });
-    console.log(chatresponse.textContent);
+    console.log(episodeResponse.textContent);
     let reader = response.body.getReader();
 
     let output = "";
@@ -155,13 +184,13 @@ if (generateEpisodes) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait..."
+      message.textContent = "Generating please wait...";
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        episodesSaveState = output
+        //episodesSaveState = output;
         console.log(output);
-        chatresponse.innerHTML = format_chatgpt_response(output);
+        episodeResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -176,8 +205,9 @@ if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
     //generateEpisodes.style.display = "none";
+    generatePptx.disabled = false;
     generateFacilitatorScript.style.display = "block";
-    fileName = "content.pptx";
+    //fileName = "content.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -189,7 +219,7 @@ if (generateContent) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: episodesSaveState }),
+      body: JSON.stringify({ message: episodeResponse.textContent}),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -199,13 +229,13 @@ if (generateContent) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait..."
+      message.textContent = "Generating please wait...";
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        contentSaveState = output
+        //contentSaveState = output;
         console.log(output);
-        chatresponse.innerHTML = format_chatgpt_response(output);
+        contentResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -220,7 +250,8 @@ if (generateFacilitatorScript) {
   generateFacilitatorScript.addEventListener("click", async (e) => {
     e.preventDefault();
     //generateContent.style.display = "none";
-    fileName = "facilitator_script.pptx";
+    generatePptx.disabled = false;
+    //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -232,7 +263,7 @@ if (generateFacilitatorScript) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: contentSaveState }),
+      body: JSON.stringify({ message: contentResponse.textContent}),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -242,13 +273,13 @@ if (generateFacilitatorScript) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait..."
+      message.textContent = "Generating please wait...";
       //chatresponse.innerHTML = marked.parse(output);
 
       if (done) {
-        facilitatorScriptSaveState = output
+        //facilitatorScriptSaveState = output;
         console.log(output);
-        chatresponse.innerHTML = format_chatgpt_response(output);
+        facilitatorScriptResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -262,6 +293,12 @@ if (generateFacilitatorScript) {
 if (generatePptx) {
   generatePptx.addEventListener("click", async (e) => {
     e.preventDefault();
+    // let activeTab;
+    // contents.forEach(async(element)=>{
+    //   if(element.checkVisibility()){
+    //     activeTab = element
+    //   }
+    // })
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -273,7 +310,7 @@ if (generatePptx) {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        message: chatresponse.innerHTML,
+        message: activeTab.innerHTML,
         filename: fileName,
       }),
     })

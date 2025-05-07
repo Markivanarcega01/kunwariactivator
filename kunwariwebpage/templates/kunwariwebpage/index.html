@@ -11,11 +11,22 @@
         <button class="submit" type="submit" id="generate-episodes" hidden>Generate Episodes</button>
         <button class="submit" type="submit" id="generate-content" hidden>Generate Content</button>
         <button class="submit" type="submit" id="generate-facilitator-script" hidden>Generate Facilitator Script</button>
-        <button class="submit" type="submit" id="generate-pptx" hidden>Generate Powerpoint</button>
+        <button class="submit" type="submit" id="generate-pptx" disabled>Generate Powerpoint</button>
     </form>
     
     <div class="chat-container">
-        <div id="chat_response" contenteditable></div>
+        <ul class="tabs-heading">
+            <li data-target="lesson_plan">Lesson plan</li>
+            <li data-target="episodes">Episodes</li>
+            <li data-target="content">Content</li>
+            <li data-target="facilitator_script">Script</li>
+        </ul>
+        <div class="tabs-body">
+            <div id="lesson_plan" class="chat_response" contenteditable></div>
+            <div id="episodes" class="chat_response" contenteditable hidden></div>
+            <div id="content" class="chat_response" contenteditable hidden></div>
+            <div id="facilitator_script" class="chat_response" contenteditable hidden></div>
+        </div>
         <div class="message-download">
             <button class="submit btn-under-gptresponse" id="download-pptx" disabled>Download</button>
             <button class="submit btn-under-gptresponse" onClick="window.location.href=window.location.href" >Reset</button>

@@ -236,34 +236,34 @@ Format all materials for easy reference during implementation, with clear sectio
 
 Based on the episodic lesson plan developed, create comprehensive facilitator materials for effective implementation:
 
-### Facilitator Overview:
+### Facilitator Overview
 *Provide a 1-page summary of the entire lesson sequence
 *Include learning objectives, time requirements, and required preparation
 *Outline technology and resource needs with alternatives
 
 For Each Episode (1-4), Create Detailed Implementation Guides:
-### Pre-Session Preparation:
+### Pre-Session Preparation
 - Materials checklist (digital and physical)
 - Room/space setup instructions
 - Technology setup and troubleshooting tips
 - Pre-session facilitator knowledge check
-### Step-by-Step Facilitation Script:
+### Step-by-Step Facilitation Script
 - Opening hooks and engagement strategies
 - Transition scripts between activities
 - Sample dialogue with anticipated student responses
 - Time allocations for each segment (minimum/ideal)
 - Adaptation notes for different learning contexts
-### Student Support Guide:
+### Student Support Guide
 - Common misconceptions and how to address them
 - Differentiation strategies for various learning needs
 - Extension prompts for advanced learners
 - Support scaffolds for struggling learners
-### Assessment Implementation:
+### Assessment Implementation
 - Detailed evaluation criteria and success indicators
 - Observation prompts during activities
 - Feedback delivery scripts
 - Documentation strategies
-### Reflection and Closure:
+### Reflection and Closure
 - Guided discussion questions with sample responses
 - Consolidation strategies for key concepts
 - Bridge statements to subsequent episodes
@@ -354,7 +354,7 @@ def generate_pptx(request):
                         trim_part = re.sub(r'<[^>]+>', '', i[1])
                         content_placeholder.text += f"{trim_part}\n"
                         
-
+            #use file-like object instead of saving in path
             prs.save(os.path.join(settings.MEDIA_ROOT,fileName))
             return JsonResponse({"message": "File generated", "filename": fileName}, status=200)
               

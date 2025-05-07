@@ -260,10 +260,10 @@ form {
   height: 675px;
   text-align: center;
 }
-.body-index form,
+/* .body-index form,
 .body-index #chat_response {
   margin: 32px 8px 0 8px;
-}
+} */
 .body-index h1 {
   font-size: 20px;
   margin-bottom: 15px;
@@ -304,7 +304,11 @@ form {
   border: 2px solid #2a2a2a;
   color: #2a2a2a;
 }
-.body-index #chat_response {
+.body-index form button:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.body-index .chat_response {
   margin-left: 8px;
   background: #fff;
   padding: 15px;
@@ -313,11 +317,25 @@ form {
   font-size: 16px;
   line-height: 1.8;
   color: #333;
-  width: 600px;
-  max-width: 600px;
-  height: 620px;
+  width: inherit;
+  height: 100%;
   text-align: left;
   overflow-y: auto;
+}
+.body-index .chat-container{
+  width: 600px;
+  height: 675px;
+}
+.body-index .chat-container .tabs-body{
+  display:flex;
+  width: inherit;
+  height: 95%;
+}
+.body-index .chat-container .tabs-heading{
+  height: 5%;
+}
+.body-index .chat-container ul,li{
+  display: inline-block;
 }
 .body-index .message-download {
   display: flex;
@@ -352,7 +370,7 @@ form {
     width: 90%;
     margin-top: 80px;
   }
-  .body-index #chat_response {
+  .body-index .chat_response {
     width: 90%;
     margin-bottom: 20px;
     margin-top: 12px;
