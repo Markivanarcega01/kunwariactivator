@@ -18,7 +18,7 @@ const episodeResponse = document.querySelector("#episodes");
 const contentResponse = document.querySelector("#content");
 const facilitatorScriptResponse = document.querySelector("#facilitator_script");
 const generatePptx = document.querySelector("#generate-pptx");
-const downloadPptx = document.querySelector("#download-pptx");
+//const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
 let fileName = "lesson_plan.pptx";
 let activeTab = document.querySelector("#lesson_plan");
@@ -32,19 +32,19 @@ if (tabs) {
       const targetId = tab.getAttribute("data-target");
 
       //Change tab colors
-      tabs.forEach((tab)=>{
-        tab.classList.remove("active")
-      })
-      tab.classList.add('active')
+      tabs.forEach((tab) => {
+        tab.classList.remove("active");
+      });
+      tab.classList.add("active");
 
       contents.forEach((content) => {
-        if(content.id == targetId && content.textContent != ""){
-          console.log("active tab found and has content")
-          fileName = `${content.id}.pptx`
-          activeTab = content
+        if (content.id == targetId && content.textContent != "") {
+          console.log("active tab found and has content");
+          fileName = `${content.id}.pptx`;
+          activeTab = content;
           generatePptx.disabled = false;
-        }else if(content.id == targetId && content.textContent == ""){
-          console.log("active tab has no content")
+        } else if (content.id == targetId && content.textContent == "") {
+          console.log("active tab has no content");
           generatePptx.disabled = true;
         }
         content.hidden = content.id !== targetId;
@@ -119,7 +119,6 @@ if (submitToChatgpt) {
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
       //generatePptx.style.display = "block";
-      generatePptx.disabled = false;
       generateEpisodes.style.display = "block";
       //generateContent.style.display = "block";
       //generateFacilitatorScript.style.display = "block";
@@ -150,6 +149,7 @@ if (submitToChatgpt) {
 
       if (done) {
         //lessonPlanSaveState = output;
+        generatePptx.disabled = false;
         console.log(output);
         lessonResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
@@ -166,7 +166,6 @@ if (generateEpisodes) {
   generateEpisodes.addEventListener("click", async (e) => {
     e.preventDefault();
     //submitToChatgpt.style.display = "none";
-    generatePptx.disabled = false;
     generateContent.style.display = "block";
     //fileName = "episodes.pptx";
     //console.log(chatresponse.textContent)
@@ -180,7 +179,7 @@ if (generateEpisodes) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: lessonResponse.textContent}),
+      body: JSON.stringify({ message: lessonResponse.textContent }),
     });
     console.log(episodeResponse.textContent);
     let reader = response.body.getReader();
@@ -195,6 +194,7 @@ if (generateEpisodes) {
 
       if (done) {
         //episodesSaveState = output;
+        generatePptx.disabled = false;
         console.log(output);
         episodeResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
@@ -211,7 +211,6 @@ if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
     //generateEpisodes.style.display = "none";
-    generatePptx.disabled = false;
     generateFacilitatorScript.style.display = "block";
     //fileName = "content.pptx";
     //console.log(chatresponse.textContent)
@@ -225,7 +224,7 @@ if (generateContent) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: episodeResponse.textContent}),
+      body: JSON.stringify({ message: episodeResponse.textContent }),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -240,6 +239,7 @@ if (generateContent) {
 
       if (done) {
         //contentSaveState = output;
+        generatePptx.disabled = false;
         console.log(output);
         contentResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
@@ -256,7 +256,6 @@ if (generateFacilitatorScript) {
   generateFacilitatorScript.addEventListener("click", async (e) => {
     e.preventDefault();
     //generateContent.style.display = "none";
-    generatePptx.disabled = false;
     //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
@@ -269,7 +268,7 @@ if (generateFacilitatorScript) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: contentResponse.textContent}),
+      body: JSON.stringify({ message: contentResponse.textContent }),
     });
     //console.log(response)
     let reader = response.body.getReader();
@@ -284,6 +283,7 @@ if (generateFacilitatorScript) {
 
       if (done) {
         //facilitatorScriptSaveState = output;
+        generatePptx.disabled = false;
         console.log(output);
         facilitatorScriptResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
@@ -299,17 +299,10 @@ if (generateFacilitatorScript) {
 if (generatePptx) {
   generatePptx.addEventListener("click", async (e) => {
     e.preventDefault();
-    // let activeTab;
-    // contents.forEach(async(element)=>{
-    //   if(element.checkVisibility()){
-    //     activeTab = element
-    //   }
-    // })
-    //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
-    await fetch("/homepage/generate_pptx/", {
+    const response = await fetch("/homepage/generate_pptx/", {
       method: "POST",
       headers: {
         "X-CSRFToken": csrf_token,
@@ -319,34 +312,40 @@ if (generatePptx) {
         message: activeTab.innerHTML,
         filename: fileName,
       }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //downloadPptx.style.display = "block";
-        downloadPptx.disabled = false;
-        downloadPptx.setAttribute("filename", data.filename);
-        //message.style.display = "block"
-        message.textContent = `${data.message}`;
-        setTimeout(() => {
-          //message.style.display = "none"
-          message.textContent = "";
-        }, 3000);
-      });
+    });
+    console.log(response);
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = fileName || "presentation.pptx"; // fallback name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+    } else {
+      const errorData = await response.json();
+      console.error("Error generating PPTX:", errorData.error);
+      alert("Failed to generate PowerPoint: " + errorData.error);
+    }
   });
 }
 
-if (downloadPptx) {
-  downloadPptx.addEventListener("click", (e) => {
-    e.preventDefault();
-    let fileNameAttribute = downloadPptx.getAttribute("filename");
-    const url = `/homepage/download/${fileNameAttribute}`;
-    const a = document.createElement("a");
-    a.href = url;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    downloadPptx.removeAttribute("filename");
-    //downloadPptx.style.display = "none"
-    downloadPptx.disabled = true;
-  });
-}
+// if (downloadPptx) {
+//   downloadPptx.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     let fileNameAttribute = downloadPptx.getAttribute("filename");
+//     const url = `/homepage/download/${fileNameAttribute}`;
+//     const a = document.createElement("a");
+//     a.href = url;
+//     document.body.appendChild(a);
+//     a.click();
+//     document.body.removeChild(a);
+//     downloadPptx.removeAttribute("filename");
+//     //downloadPptx.style.display = "none"
+//     downloadPptx.disabled = true;
+//   });
+// }
