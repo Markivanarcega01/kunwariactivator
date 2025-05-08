@@ -11,7 +11,6 @@
         <button class="submit" type="submit" id="generate-episodes" hidden>Generate Episodes</button>
         <button class="submit" type="submit" id="generate-content" hidden>Generate Content</button>
         <button class="submit" type="submit" id="generate-facilitator-script" hidden>Generate Facilitator Script</button>
-        <button class="submit" type="submit" id="generate-pptx" disabled>Generate Powerpoint</button>
     </form>
     
     <div class="chat-container">
@@ -28,7 +27,8 @@
             <div id="facilitator_script" class="chat_response" contenteditable hidden></div>
         </div>
         <div class="message-download">
-            <button class="submit btn-under-gptresponse" id="download-pptx" disabled>Download</button>
+            {% comment %} <button class="submit btn-under-gptresponse" id="download-pptx" disabled>Download</button> {% endcomment %}
+            <button class="submit btn-under-gptresponse" type="submit" id="generate-pptx" disabled>Download</button>
             <button class="submit btn-under-gptresponse" onClick="window.location.href=window.location.href" >Reset</button>
             <p id="message"></p>
         </div>
