@@ -28,8 +28,14 @@ const contents = document.querySelectorAll(".tabs-body div");
 
 if (tabs) {
   tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
+    tab.addEventListener("click", (e) => {
       const targetId = tab.getAttribute("data-target");
+
+      //Change tab colors
+      tabs.forEach((tab)=>{
+        tab.classList.remove("active")
+      })
+      tab.classList.add('active')
 
       contents.forEach((content) => {
         if(content.id == targetId && content.textContent != ""){

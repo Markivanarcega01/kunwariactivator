@@ -334,6 +334,14 @@ form {
 .body-index .chat-container .tabs-heading{
   height: 5%;
 }
+.tabs-heading li {
+  color: black;
+  cursor: pointer;
+}
+.tabs-heading li.active {
+  color: blue;
+  font-weight: bold;
+}
 .body-index .chat-container ul,li{
   display: inline-block;
 }
