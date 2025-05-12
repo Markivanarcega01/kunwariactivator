@@ -309,7 +309,6 @@ form {
   cursor: not-allowed;
 }
 .body-index .chat_response {
-  margin-left: 8px;
   background: #fff;
   padding: 15px;
   border-radius: 8px;
@@ -323,24 +322,49 @@ form {
   overflow-y: auto;
 }
 .body-index .chat-container{
+  margin-left: 8px;
   width: 600px;
   height: 675px;
 }
 .body-index .chat-container .tabs-body{
   display:flex;
   width: inherit;
-  height: 95%;
+  height: 92%;
 }
 .body-index .chat-container .tabs-heading{
-  height: 5%;
+  display: flex;
+  list-style: none;
+  padding: 0;
+  width: inherit;
+  border-radius: 8px;
+  border-bottom: 2px solid #ddd;
+  background-color: #f9f9f9;
+  font-family: 'Segoe UI', sans-serif;
 }
 .tabs-heading li {
-  color: black;
+  /* color: black;
+  cursor: pointer; */
+  padding: 12px 24px;
   cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background-color: #f1f1f1;
+  margin-right: 4px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  transition: all 0.3s ease;
 }
-.tabs-heading li.active {
-  color: blue;
+.tabs-heading li:hover {
+  background-color: #e2e2e2;
+  color: #333;
+}
+.tabs-heading li.active{
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-bottom: 2px solid white;
+  color: #2c3e50;
   font-weight: bold;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
 }
 .body-index .chat-container ul,li{
   display: inline-block;
