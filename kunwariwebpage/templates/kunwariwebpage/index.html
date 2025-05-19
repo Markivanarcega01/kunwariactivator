@@ -16,13 +16,13 @@
     <div class="chat-container">
         <ul class="tabs-heading">
             <li data-target="lesson_plan" class="active">Lesson plan</li>
-            <li data-target="episodes">Episodes</li>
+            {% comment %} <li data-target="episodes">Episodes</li> {% endcomment %}
             <li data-target="content">Content</li>
             <li data-target="facilitator_script">Script</li>
         </ul>
         <div class="tabs-body">
             <div id="lesson_plan" class="chat_response" contenteditable></div>
-            <div id="episodes" class="chat_response" contenteditable hidden></div>
+            {% comment %} <div id="episodes" class="chat_response" contenteditable hidden></div> {% endcomment %}
             <div id="content" class="chat_response" contenteditable hidden></div>
             <div id="facilitator_script" class="chat_response" contenteditable hidden></div>
         </div>
@@ -89,7 +89,6 @@
         <li>
             <strong>II. Save Your Lesson Plan</strong>
             <ul>
-                <li>1. Click the <strong>Generate PowerPoint</strong> button.</li>
                 <li>2. Click the <strong>Download</strong> button to save your lesson plan as a <code>.pptx</code> file.</li>
             </ul>
         </li>
@@ -100,17 +99,17 @@
                 <li>
                     <strong>- Generate Episodes:</strong><br> 
                     1. Break down the lesson plan into structured episodes.<br>
-                    2. <em>To save, click <strong>Generate PowerPoint</strong> and then <strong>Download</strong>.</em>
+                    2. <em>To save, click <strong>Download</strong>.</em>
                 </li>
                 <li>
                     <strong>- Generate Content(click again to regenerate):</strong><br>
                     1. Add detailed content to each slide generated in the Episodes phase.<br>
-                    2. <em>To save, click <strong>Generate PowerPoint</strong> and then <strong>Download</strong>.</em>
+                    2. <em>To save, click <strong>Download</strong>.</em>
                 </li>
                 <li>
                     <strong>- Generate Facilitator Script:(click again to regenerate)</strong><br> 
                     1. Create a detailed script for the slides generated in the Content phase.<br>
-                    2. <em>To save, click <strong>Generate PowerPoint</strong> and then <strong>Download</strong>.</em>
+                    2. <em>To save, click <strong>Download</strong>.</em>
                 </li>
             </ul>
         </li>

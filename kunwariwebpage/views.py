@@ -41,19 +41,18 @@ def chatbot_view(request):
             if request.method == "POST":
                 data = json.loads(request.body)
                 message = data['message']
-                message += """### Create lessons - Automatically create analogies and laymanized examples to teach the topics and lessons
+                message += """### Create lessons - Set lesson in a storyworld where learning activities become quests, and students take on roles, and the teacher becomes the main storyteller or quest master.
 
-### Create teaching and learning activities - Automatically Create Detailed Teaching and learning Games, Activities, and Exercises aligned with the created analogies and laymanized examples that teach the topics and lessons
+### Create teaching and learning activities - Automatically Create Teaching and learning activities aligned with the story world and the quests actively engages learners through multisensorial learning
 
-### Create assessments - Automatically create detailed gamified assessment  aligned with the created analogies and laymanized examples that teaches the topics and lessons
-
-### Key Story/Premise - Automatically Create a story or premise aligned with the analogies and the laymanized examples that teaches the topics and lessons.
-
-### Key Plot/Conflict/Obstacle - Highlight the conflict in the given story/presented as the challenges/mission/quests of the protagonists coming from the story.
+### Create assessments - Automatically create gamified assessments  aligned with the learning objectives integrated within the story.
 
 ### Key moral lesson/values(Narrative) - Automatically generate the Morals or Values arc connected to the key story/premise.
 
-### Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transform the Learning Objectives into Game Mechanics that integrates with the plot of the keystory. Objective 1: Learning Objectives and Verb-based Game Mechanics related to the story. Objective 2: Another learning goal tied to the story.  Objective 3: Another learning goal tied to the story, which will serve as the grand quest. 
+### Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transform the Learning Objectives into Game Mechanics that integrates with the plot of the key story. 
+##Objective 1: Learning Objective 1 tied to episode 2 of the story stated in a verb-based quest format
+##Objective 2: Learning Objective 2 tied to episode 2 of the story stated in a verb-based quest format
+##Objective 3: Learning Objective 3 tied to episode 3 of the story stated in a verb-based quest format, which serves as the Grand Quest
 
 ### Player Types (Segmentation). All the specific activities should be part of the story.
 Killer: Automatically Create Specific activities for competitive players.  Achiever: Automatically Create Specific activities Focused on accomplishment-based challenges. Explorer: Automatically creates specific activities Engages with discovery-based elements. Socializer: Automatically Create Specific Activities Collaborative and team-oriented tasks. 
@@ -74,6 +73,8 @@ Life Skills, Soft Skills, Creative Skills, 5 C’s of 21st-century learning Appl
 ### Bonus Challenge - Automatically generate a challenge from real-world scenarios or UN SDG that students can solve from what they’ve learned from the topic - MAKE THIS PISA CREATIVE THINKING FORMAT 
 
 ### Rewards and Badges - Automatically unlock Achievements based on performance and engagement.
+
+Strictly follow the time duration mentioned
 
 """
                 
@@ -176,6 +177,8 @@ Episode 1: Gamified Lessons - automatically create slides from lesson modules.
 Episode 2: Gamified Teaching and Learning Activities - Create slides for interactive activities. 
 Episode 3: Gamified Assessments - Create slides for narrative-based assessments. 
 Repeat as needed for further episodes -  Tailored lessons, activities, and assessments in sequence.
+
+Strictly follow the time duration mentioned
             """
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
@@ -215,6 +218,8 @@ Please generate comprehensive slide content for each episode, including:
 - Real-world application connections
 - Extension options and resources
 - Celebration and accomplishment recognition
+
+Strictly follow the time duration mentioned
 """  
             """Please generate detailed content for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
@@ -269,6 +274,8 @@ For Each Episode (1-4), Create Detailed Implementation Guides:
 - Consolidation strategies for key concepts
 - Bridge statements to subsequent episodes
 - Follow-up activities and homework options
+
+Strictly follow the time duration mentioned
 """
             
             
@@ -304,6 +311,7 @@ def generate_pptx(request):
             """
             pattern = r'<([a-zA-Z][a-zA-Z0-9]*)[^>]*>(.*?)</\1>'
             title_slide = prs.slides.add_slide(prs.slide_layouts[0])
+            content_placeholder = ""
             run_once = True
             for part in parts:
                 if part == " ":

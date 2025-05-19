@@ -6,7 +6,7 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const loginSubmit = document.getElementById("login-submit");
 const submitToChatgpt = document.querySelector("#submit-to-chatgpt");
-const generateEpisodes = document.querySelector("#generate-episodes");
+//const generateEpisodes = document.querySelector("#generate-episodes");
 const generateFacilitatorScript = document.querySelector(
   "#generate-facilitator-script"
 );
@@ -14,7 +14,7 @@ const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
 //const chatresponse = document.querySelector("#chat_response");
 const lessonResponse = document.querySelector("#lesson_plan");
-const episodeResponse = document.querySelector("#episodes");
+//const episodeResponse = document.querySelector("#episodes");
 const contentResponse = document.querySelector("#content");
 const facilitatorScriptResponse = document.querySelector("#facilitator_script");
 const generatePptx = document.querySelector("#generate-pptx");
@@ -119,16 +119,16 @@ if (submitToChatgpt) {
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
       //generatePptx.style.display = "block";
-      generateEpisodes.style.display = "block";
-      //generateContent.style.display = "block";
+      //generateEpisodes.style.display = "block";
+      generateContent.style.display = "block";
       //generateFacilitatorScript.style.display = "block";
     }
-    if (generateContent.checkVisibility()) {
-      generateContent.style.display = "none";
-    }
-    if (generateFacilitatorScript.checkVisibility()) {
-      generateFacilitatorScript.style.display = "none";
-    }
+    // if (generateContent.checkVisibility()) {
+    //   generateContent.style.display = "none";
+    // }
+    // if (generateFacilitatorScript.checkVisibility()) {
+    //   generateFacilitatorScript.style.display = "none";
+    // }
     const response = await fetch("/homepage/chatbot/", {
       method: "POST",
       headers: { "Content-type": "application/json" },
@@ -162,50 +162,50 @@ if (submitToChatgpt) {
   });
 }
 
-if (generateEpisodes) {
-  generateEpisodes.addEventListener("click", async (e) => {
-    e.preventDefault();
-    //submitToChatgpt.style.display = "none";
-    generateContent.style.display = "block";
-    //fileName = "episodes.pptx";
-    //console.log(chatresponse.textContent)
-    let csrf_token = document.querySelector(
-      "input[name=csrfmiddlewaretoken]"
-    ).value;
-    const response = await fetch("/homepage/generate_episodes/", {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": csrf_token,
-        "Content-type": "application/json",
-      },
-      //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: lessonResponse.textContent }),
-    });
-    console.log(episodeResponse.textContent);
-    let reader = response.body.getReader();
+// if (generateEpisodes) {
+//   generateEpisodes.addEventListener("click", async (e) => {
+//     e.preventDefault();
+//     //submitToChatgpt.style.display = "none";
+//     generateContent.style.display = "block";
+//     //fileName = "episodes.pptx";
+//     //console.log(chatresponse.textContent)
+//     let csrf_token = document.querySelector(
+//       "input[name=csrfmiddlewaretoken]"
+//     ).value;
+//     const response = await fetch("/homepage/generate_episodes/", {
+//       method: "POST",
+//       headers: {
+//         "X-CSRFToken": csrf_token,
+//         "Content-type": "application/json",
+//       },
+//       //body: JSON.stringify({ message: chatresponse.textContent }),
+//       body: JSON.stringify({ message: lessonResponse.textContent }),
+//     });
+//     console.log(episodeResponse.textContent);
+//     let reader = response.body.getReader();
 
-    let output = "";
+//     let output = "";
 
-    while (true) {
-      const { done, value } = await reader.read();
-      output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait...";
-      //chatresponse.innerHTML = marked.parse(output);
+//     while (true) {
+//       const { done, value } = await reader.read();
+//       output += new TextDecoder().decode(value);
+//       message.textContent = "Generating please wait...";
+//       //chatresponse.innerHTML = marked.parse(output);
 
-      if (done) {
-        //episodesSaveState = output;
-        generatePptx.disabled = false;
-        console.log(output);
-        episodeResponse.innerHTML = format_chatgpt_response(output);
-        setTimeout(() => {
-          //message.style.display = "none"
-          message.textContent = "";
-        }, 3000);
-        return;
-      }
-    }
-  });
-}
+//       if (done) {
+//         //episodesSaveState = output;
+//         generatePptx.disabled = false;
+//         console.log(output);
+//         episodeResponse.innerHTML = format_chatgpt_response(output);
+//         setTimeout(() => {
+//           //message.style.display = "none"
+//           message.textContent = "";
+//         }, 3000);
+//         return;
+//       }
+//     }
+//   });
+// }
 
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
@@ -224,7 +224,7 @@ if (generateContent) {
         "Content-type": "application/json",
       },
       //body: JSON.stringify({ message: chatresponse.textContent }),
-      body: JSON.stringify({ message: episodeResponse.textContent }),
+      body: JSON.stringify({ message: lessonResponse.textContent }),
     });
     //console.log(response)
     let reader = response.body.getReader();
