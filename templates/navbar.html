@@ -1,0 +1,39 @@
+<div class="logo">
+  <a href="{% url 'kunwariwebpage:index'%}">
+    <button class="btn btn-logo">
+      <img src="/static/BINGExp.png" />
+    </button>
+  </a>
+</div>
+
+<div class="user-options">
+  <button class="btn user-btn" onclick="toggleDropdown()">
+    <i class="bx bxs-user"></i>
+  </button>
+  <div id="userDropdown" class="dropdown">
+    <a href="#" onclick="toggleThemeDropdown()">
+      <i class="bx bxs-palette"></i>Change Theme
+    </a>
+    <div id="themeDropdown" class="dropdown theme-dropdown">
+      <a href="#" onclick="setTheme('light')"
+        ><i class="bx bxs-sun"></i>Light Mode</a
+      >
+      <a href="#" onclick="setTheme('dark')"
+        ><i class="bx bxs-moon"></i>Dark Mode</a
+      >
+      <a href="#" onclick="setTheme('system')"
+        ><i class="bx bx-desktop"></i>System Default</a
+      >
+    </div>
+    <a href="{% url 'pricings:pricing_list'%}"
+      ><i class="bx bxs-purchase-tag"></i>Pricing</a
+    >
+    <a href="#"><i class="bx bxs-cog"></i>Settings</a>
+    {% comment %} {% if params.isAdmin %}
+    <a href="{% url 'users:accounts'%}"><i class="bx bxs-cog"></i>Accounts</a>
+    {% endif %} {% endcomment %}
+    <a href="{% url 'users:logout_user'%}"
+      ><i class="bx bxs-log-out"></i>Logout</a
+    >
+  </div>
+</div>

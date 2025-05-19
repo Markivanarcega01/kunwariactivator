@@ -380,14 +380,7 @@ form {
   width: 30%;
 }
 
-.body-index .logo button {
-  background-color: transparent;
-  border: transparent;
-}
-.body-index .logo img {
-  width: 64px;
-  height: 64px;
-}
+
 .body-index .message-download button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -496,12 +489,21 @@ form {
 .logo button {
   color: #fffae8;
   font-size: 16px;
-  background-color: #2a2a2a;
-  border: 1px solid #2a2a2a;
+  background-color: transparent;
+  border: none;
   border-radius: 8px;
   padding: 0 6px;
   height: 48px;
   width: 64px;
+  cursor: pointer;
+}
+/* .logo button {
+  background-color: transparent;
+  border: transparent;
+} */
+.logo img {
+  width: 64px;
+  height: 64px;
 }
 @media screen and (max-width: 650px) {
   .logo {
