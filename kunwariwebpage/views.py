@@ -45,14 +45,14 @@ def chatbot_view(request):
 
 ### Create teaching and learning activities - Automatically Create Teaching and learning activities aligned with the story world and the quests actively engages learners through multisensorial learning
 
-### Create assessments - Automatically create gamified assessments  aligned with the learning objectives integrated within the story.
-
-### Key moral lesson/values(Narrative) - Automatically generate the Morals or Values arc connected to the key story/premise.
-
 ### Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transform the Learning Objectives into Game Mechanics that integrates with the plot of the key story. 
 ##Objective 1: Learning Objective 1 tied to episode 2 of the story stated in a verb-based quest format
 ##Objective 2: Learning Objective 2 tied to episode 2 of the story stated in a verb-based quest format
 ##Objective 3: Learning Objective 3 tied to episode 3 of the story stated in a verb-based quest format, which serves as the Grand Quest
+
+### Create assessments - Automatically create gamified assessments  aligned with the learning objectives integrated within the story.
+
+### Key moral lesson/values(Narrative) - Automatically generate the Morals or Values arc connected to the key story/premise.
 
 ### Player Types (Segmentation). All the specific activities should be part of the story.
 Killer: Automatically Create Specific activities for competitive players.  Achiever: Automatically Create Specific activities Focused on accomplishment-based challenges. Explorer: Automatically creates specific activities Engages with discovery-based elements. Socializer: Automatically Create Specific Activities Collaborative and team-oriented tasks. 
@@ -235,6 +235,21 @@ def generate_facilitator_script(request):
             data = json.loads(request.body)
             message = data['message']
             message += """
+Based on the episodic lesson plan developed, create comprehensive facilitator script for effective implementation:
+
+Facilitator Overview:
+  Provide a 1-page summary of the entire lesson sequence
+  Include learning objectives, and required preparation
+  Outline technology and resource needs with alternatives
+
+For Each Episode (1-4), Create Detailed Scripts.
+"""
+            
+            
+            
+            
+            
+            """
 Format all materials for easy reference during implementation, with clear section headings, visual cues, and a consistent layout that distinguishes between:
 *Essential instructions (must do)
 *Optional enhancements (could do)
