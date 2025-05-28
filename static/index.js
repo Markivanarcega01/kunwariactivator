@@ -12,6 +12,7 @@ const generateFacilitatorScript = document.querySelector(
 );
 const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
+const img = document.querySelector("#img");
 //const chatresponse = document.querySelector("#chat_response");
 const lessonResponse = document.querySelector("#lesson_plan");
 //const episodeResponse = document.querySelector("#episodes");
@@ -129,10 +130,17 @@ if (submitToChatgpt) {
     // if (generateFacilitatorScript.checkVisibility()) {
     //   generateFacilitatorScript.style.display = "none";
     // }
+    const formData = new FormData();
+    formData.append("message", prompt.value);
+
+    // Append multiple files
+    for (let i = 0; i < img.files.length; i++) {
+      formData.append("images", img.files[i]);
+    }
     const response = await fetch("/homepage/chatbot/", {
       method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ message: prompt.value }),
+      body: formData,
+      //body: JSON.stringify({ message: prompt.value, img: img.files }),
     });
     console.log(response);
 

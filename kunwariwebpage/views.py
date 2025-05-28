@@ -39,10 +39,17 @@ def chatbot_view(request):
         memory = []
         try:
             if request.method == "POST":
-                data = json.loads(request.body)
-                message = data['message']
-                message += """### Create lessons - Set lesson in a storyworld where learning activities become quests, and students take on roles, and the teacher becomes the main storyteller or quest master.
-
+                message = request.POST.get("message")
+                images = request.FILES.getlist("images")
+                print(message)
+                #print(images)
+                #data = json.loads(request.body)
+                #print(data)
+                #message = data['message']
+                #message += 
+                
+                """### Create lessons - Set lesson in a storyworld where learning activities become quests, and students take on roles, and the teacher becomes the main storyteller or quest master.
+### Lectures - Automatically Create short lectures thought through analogies consistent with the story world
 ### Create teaching and learning activities - Automatically Create Teaching and learning activities aligned with the story world and the quests actively engages learners through multisensorial learning
 
 ### Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transform the Learning Objectives into Game Mechanics that integrates with the plot of the key story. 
@@ -121,7 +128,7 @@ Strictly follow the time duration mentioned
                 # with open("static/Kunwari Activator Template (KATE) V2.pdf", "r", encoding="utf-8") as f:
                 #      instructions = f.read()
                 # message+= instructions
-                response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
+                response = StreamingHttpResponse(generate_response(message, images), status=200, content_type='text/plain')
                 #return render(request, "kunwariwebpage/index.html", {"response": 'response'})
                 return response
         except Exception as e:
