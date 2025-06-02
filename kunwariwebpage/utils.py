@@ -11,7 +11,7 @@ def encode_uploaded_image(image_file):
     """Encodes an InMemoryUploadedFile or TemporaryUploadedFile to base64."""
     return base64.b64encode(image_file.read()).decode("utf-8")
 
-def generate_response(prompt, images):
+def generate_response(prompt, images = None):
     try:
         messages_container = [
             {
@@ -20,16 +20,19 @@ def generate_response(prompt, images):
             },
         ]
         
-        for image in images:
-            image_base64 = encode_uploaded_image(image)
-            mime_type = image.content_type or "image/jpeg"
-            image_url = f"data:{mime_type};base64,{image_base64}"
-            messages_container.append({
-                "type":"image_url",
-                "image_url":{
-                    "url":image_url,
-                }
-            })
+        if images is None:
+            pass
+        else:
+            for image in images:
+                image_base64 = encode_uploaded_image(image)
+                mime_type = image.content_type or "image/jpeg"
+                image_url = f"data:{mime_type};base64,{image_base64}"
+                messages_container.append({
+                    "type":"image_url",
+                    "image_url":{
+                        "url":image_url,
+                    }
+                })
             
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Use your fine-tuned model name
@@ -46,7 +49,6 @@ Framing suggestions as options rather than mandates, respecting teacher autonomy
 Using language that empowers teachers and inspires confidence,
 Asking clarifying questions when needed to better understand the teaching context,
 Response should be not contain unnecessary paragraphs like this (Absolutely! Below is a more detailed breakdown of the content for each slide in the episodic lesson plan. This will provide you with a comprehensive guide that can be adapted into your presentation slides.) etc.
-Finally, ### means it is a topic
 """},
     {"role": "user", "content": messages_container}],
             temperature=0.7,
