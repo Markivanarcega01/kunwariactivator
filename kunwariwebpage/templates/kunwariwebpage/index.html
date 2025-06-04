@@ -3,7 +3,7 @@
 
 <div class="body-index">
     {% comment %} <form action="{% url 'kunwariwebpage:chatbot'%}" method="post" enctype="multipart/form-data"> {% endcomment %}
-    <form enctype="multipart/form-data">
+    <form>
         {% csrf_token %}
         <h1>Kunwari Activator</h1>
         <textarea id="prompt" placeholder="eg. mathematics, 60 minutes, learning objectives" name="prompt"></textarea>
@@ -29,13 +29,13 @@
         </div>
         <div class="message-download">
             {% comment %} <button class="submit btn-under-gptresponse" id="download-pptx" disabled>Download</button> {% endcomment %}
-            <button class="submit btn-under-gptresponse" type="submit" id="generate-pptx" disabled>Download</button>
+            <button class="submit btn-under-gptresponse" type="submit" id="generate-pptx" >Download</button>
             <button class="submit btn-under-gptresponse" onClick="window.location.href=window.location.href" >Reset</button>
             <p id="message"></p>
         </div>
     </div>
 </div>
-{% include 'kunwariwebpage/guide.html' %}
+{% comment %} {% include 'kunwariwebpage/guide.html' %} {% endcomment %}
 
 <script> // TEXTAREA HEIGHT AUTO RESIZE
     const textarea = document.getElementById('prompt');

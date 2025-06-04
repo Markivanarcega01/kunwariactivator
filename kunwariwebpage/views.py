@@ -1,4 +1,5 @@
 import os
+import subprocess
 from django.conf import settings
 from django.http.response import StreamingHttpResponse
 from django.shortcuts import redirect, render
@@ -12,6 +13,8 @@ from pptx.util import Inches, Pt
 from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE
 import re
 import io
+import uuid
+import threading
 
 
 def index(request):
@@ -36,7 +39,6 @@ def emu_to_inches(emu):
 
 @csrf_exempt
 def chatbot_view(request):
-        memory = []
         try:
             if request.method == "POST":
                 message = request.POST.get("message")
@@ -46,85 +48,72 @@ def chatbot_view(request):
                 #data = json.loads(request.body)
                 #print(data)
                 #message = data['message']
-                #message += 
-                
-                """### Create lessons - Set lesson in a storyworld where learning activities become quests, and students take on roles, and the teacher becomes the main storyteller or quest master.
+                message += """
+### Lessons - Set lesson in a storyworld where learning activities become quests, and students take on roles, and the teacher becomes the main storyteller or quest master.
+
+---
+
 ### Lectures - Automatically Create short lectures thought through analogies consistent with the story world
-### Create teaching and learning activities - Automatically Create Teaching and learning activities aligned with the story world and the quests actively engages learners through multisensorial learning
+
+---
+
+### Teaching and learning activities - Automatically Create Teaching and learning activities aligned with the story world and the quests actively engages learners through multisensorial learning
+
+---
 
 ### Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transform the Learning Objectives into Game Mechanics that integrates with the plot of the key story. 
 ##Objective 1: Learning Objective 1 tied to episode 2 of the story stated in a verb-based quest format
 ##Objective 2: Learning Objective 2 tied to episode 2 of the story stated in a verb-based quest format
 ##Objective 3: Learning Objective 3 tied to episode 3 of the story stated in a verb-based quest format, which serves as the Grand Quest
 
-### Create assessments - Automatically create gamified assessments  aligned with the learning objectives integrated within the story.
+---
+
+### Assessments - Automatically create gamified assessments  aligned with the learning objectives integrated within the story.
+
+---
 
 ### Key moral lesson/values(Narrative) - Automatically generate the Morals or Values arc connected to the key story/premise.
+
+---
 
 ### Player Types (Segmentation). All the specific activities should be part of the story.
 Killer: Automatically Create Specific activities for competitive players.  Achiever: Automatically Create Specific activities Focused on accomplishment-based challenges. Explorer: Automatically creates specific activities Engages with discovery-based elements. Socializer: Automatically Create Specific Activities Collaborative and team-oriented tasks. 
 Life Skills, Soft Skills, Creative Skills, 5 C’s of 21st-century learning Application - Automatically tailor the games according to applicable skills. 
 
+---
+
 ### Key Resources - Automatically generate the following: Props, Manipulatives, and Learning Materials: Suggestions for physical or virtual game materials. Background/Set: Virtual or physical space design ideas. Costume/Attire: Suggestions for character costumes or thematic attire. 
+
+---
 
 ### Activities - Automatically generate the following: Dance/Music/SFX: Tailored sound design suggestions for immersion. Food, Taste, and Scents: Olfactory enhancements for deeper engagement.
 
+---
+
 ### Student/Teacher Roles (Kalaro)  - Assigns roles to students, teachers, and NPCs in alignment with the key story.
+
+---
 
 ### Reflection and Discussion - Discussion Questions: Auto-generated to facilitate meaningful reflection. 
 
+---
+
 ### Main Challenge (Summative Assessment)  - Create a final stage with a BOSS challenge that integrates all learning outcomes.
+
+---
 
 ### What’s In It For You?/ Why is this relevant? - Automatically generate answers to this question from real-world scenarios or UN SDG or the 5Cs of 21st century Learning
 
+---
+
 ### Bonus Challenge - Automatically generate a challenge from real-world scenarios or UN SDG that students can solve from what they’ve learned from the topic - MAKE THIS PISA CREATIVE THINKING FORMAT 
+
+---
 
 ### Rewards and Badges - Automatically unlock Achievements based on performance and engagement.
 
-Strictly follow the time duration mentioned
-
+---
 """
-                
-                
-                
-                
-                
-# """
-# Create lessons - Automatically create analogies and laymanized examples to teach the topics and lessons
-
-# Create teaching and learning activities - Automatically Create Detailed Teaching and learning Games, Activities, and Exercises aligned with the created analogies and laymanized examples that teach the topics and lessons
-
-# Create assessments - Automatically create detailed gamified quizzes and exams aligned with the created analogies and laymanized examples that teaches the topics and lessons
-
-# Key moral lesson/values(Narrative) - Automatically generate the Morals or Values arc that you want the students to learn.
-
-# Key Story/Premise - Automatically Create a story or premise based on the Narrative and the analogies and the laymanized examples that teaches the topics and lessons.
-
-# Key Plot/Conflict/Obstacle - Highlight the conflict in the given story/presents the challenges/mission of the protagonists. 
-
-# Learning Objectives (Bloom Verb-Based) to Verb-Based Game Mechanics - Automatically transforms the Learning Objectives into Game Mechanics that apply to the narrative/story. Objective 1: Learning Objectives and Verb-based Game Mechanics hybrid related to the story. Objective 2: Another learning goal tied to the narrative arc.
-
-# Player Types (Segmentation) - Killer: Automatically Create Specific activities for competitive players.  Achiever: Automatically Create Specific activities Focused on accomplishment-based challenges. Explorer: Automatically creates specific activities Engages with discovery-based elements. Socializer: Automatically Create Specific Activities Collaborative and team-oriented tasks.
-
-# Life Skills, Soft Skills, Creative Skills, 5 C’s of 21st-century learning Application - Automatically tailor the games according to applicable skills. 
-
-# Key Resources - Automatically generate the following: Props, Manipulatives, and Learning Materials: Suggestions for physical or virtual game materials. Background/Set: Virtual or physical space design ideas. Costume/Attire: Suggestions for character costumes or thematic attire. 
-
-# Activities - Automatically generate the following: Dance/Music/SFX: Tailored sound design suggestions for immersion. Food, Taste, and Scents: Olfactory enhancements for deeper engagement.
-
-# Student/Teacher Roles (Kalaro)  - Assigns roles to students, teachers, and NPCs in alignment with the narrative/story.
-
-# Reflection and Discussion - Discussion Questions: Auto-generated to facilitate meaningful reflection. 
-
-# Main Challenge (Summative Assessment)  - Create a final stage with a BOSS challenge that integrates all learning outcomes and analogies.
-
-# What’s In It For You?/ Why is this relevant? - Automatically generate answers to this question from real-world scenarios or UN SDG 
-
-# Bonus Challenge - Automatically generate a challenge from real-world scenarios or UN SDG that students can solve from what they’ve learned from the topic - MAKE THIS PISA CREATIVE THINKING FORMAT 
-
-# Rewards and Badges - Automatically unlock Achievements based on performance and engagement.
-# """
-#Finally, Format your response in markdown
                 # with open("static/Kunwari Activator Template (KATE) V2.pdf", "r", encoding="utf-8") as f:
                 #      instructions = f.read()
                 # message+= instructions
@@ -201,32 +190,44 @@ def generate_content(request):
             message = data['message']
             message += """
 Please generate comprehensive slide content for each episode, including:
-### Episode 1: "Concept Introduction" - Create detailed slides with:
-- Opening slide with compelling hook and visual theme
-- Content slides for each key concept (5-8 slides per concept)
-- Visual examples and case studies with explanatory text
-- Interactive elements and discussion prompts
-- Mini-challenge slide with instructions and assessment criteria
-### Episode 2: "Skill-Building Activities" - Develop activity slides with:
-- Activity overview and learning connection for each activity
-- Step-by-step instructions with visuals
-- Player-type variations with differentiated instructions
-- Printable worksheets and digital templates
-- Activity debriefing questions
-### Episode 3: "Applied Learning Assessments" - Design assessment slides with:
-- Assessment narrative framing and mission objectives
-- Clear assessment criteria and expectations
-- Individual and group assessment options
-- Rubric slides with performance indicators
-- Self-assessment components
-### Episode 4: "Critical Reflection & Extension" - Create reflection slides with:
-- Guided reflection prompts and documentation templates
-- Boss challenge instructions and success criteria
-- Real-world application connections
-- Extension options and resources
-- Celebration and accomplishment recognition
 
-Strictly follow the time duration mentioned
+Please include images(Online URLs) for each topic that are accessible online based on the headings. Following the format ![alt text](Image URL) and make sure it was on a new line,
+
+## Episode 1: "Concept Introduction" - Create detailed slides with(separate each slide with ---):
+Opening slide with compelling hook and visual theme
+Content slides for each key concept (5-8 slides per concept)
+Visual examples and case studies with explanatory text
+Interactive elements and discussion prompts
+Mini-challenge slide with instructions and assessment criteria
+
+---
+
+## Episode 2: "Skill-Building Activities" - Develop activity slides with(separate each slide with ---):
+Activity overview and learning connection for each activity
+Step-by-step instructions with visuals
+Player-type variations with differentiated instructions
+Printable worksheets and digital templates
+Activity debriefing questions
+
+---
+
+## Episode 3: "Applied Learning Assessments" - Design assessment slides with(separate each slide with ---):
+Assessment narrative framing and mission objectives
+Clear assessment criteria and expectations
+Individual and group assessment options
+Rubric slides with performance indicators
+Self-assessment components
+
+---
+
+## Episode 4: "Critical Reflection & Extension" - Create reflection slides with(separate each slide with ---):
+Guided reflection prompts and documentation templates
+Boss challenge instructions and success criteria
+Real-world application connections
+Extension options and resources
+Celebration and accomplishment recognition
+
+---
 """  
             """Please generate detailed content for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
@@ -249,18 +250,15 @@ Facilitator Overview:
   Include learning objectives, and required preparation
   Outline technology and resource needs with alternatives
 
+---
+
 For Each Episode (1-4), Create Detailed Scripts.
-"""
-            
-            
-            
-            
-            
-            """
 Format all materials for easy reference during implementation, with clear section headings, visual cues, and a consistent layout that distinguishes between:
 *Essential instructions (must do)
 *Optional enhancements (could do)
 *Troubleshooting tips (if needed)
+
+---
 
 Based on the episodic lesson plan developed, create comprehensive facilitator materials for effective implementation:
 
@@ -269,39 +267,50 @@ Based on the episodic lesson plan developed, create comprehensive facilitator ma
 *Include learning objectives, time requirements, and required preparation
 *Outline technology and resource needs with alternatives
 
+---
+
 For Each Episode (1-4), Create Detailed Implementation Guides:
 ### Pre-Session Preparation
 - Materials checklist (digital and physical)
 - Room/space setup instructions
 - Technology setup and troubleshooting tips
 - Pre-session facilitator knowledge check
+
+---
+
 ### Step-by-Step Facilitation Script
 - Opening hooks and engagement strategies
 - Transition scripts between activities
 - Sample dialogue with anticipated student responses
 - Time allocations for each segment (minimum/ideal)
 - Adaptation notes for different learning contexts
+
+---
+
 ### Student Support Guide
 - Common misconceptions and how to address them
 - Differentiation strategies for various learning needs
 - Extension prompts for advanced learners
 - Support scaffolds for struggling learners
+
+---
+
 ### Assessment Implementation
 - Detailed evaluation criteria and success indicators
 - Observation prompts during activities
 - Feedback delivery scripts
 - Documentation strategies
+
+---
+
 ### Reflection and Closure
 - Guided discussion questions with sample responses
 - Consolidation strategies for key concepts
 - Bridge statements to subsequent episodes
 - Follow-up activities and homework options
 
-Strictly follow the time duration mentioned
+---
 """
-            
-            
-            
             """Please generate a complete facilitator script for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
@@ -310,7 +319,7 @@ Strictly follow the time duration mentioned
      return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-def generate_pptx(request):
+def generate_pptxs(request):
     prs = Presentation()
     pptx_io = io.BytesIO()
     # dimension_width = emu_to_inches(prs.slide_width)
@@ -377,13 +386,69 @@ def generate_pptx(request):
             response['Content-Disposition'] = 'attachment; filename="sample.pptx"'
             print(response)
             return response
-              
+            # Step 4: Render using Quarto
+            # subprocess.run(["quarto", "render", "quarto/index.qmd"], check=True)
+            # # Step 5: Return as downloadable file
+            # return FileResponse(
+            # open("quarto/index.pptx", "rb"),
+            # as_attachment=True,
+            # filename="Sample.pptx"
+            # )
     except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+    
+def generate_pptx(request):
+    try:
+        if request.method != "POST":
+            return  JsonResponse({"error": "Invalid request"}, status=405)
+        
+        #title = request.POST.get('title')
+        #content = request.POST.get('content')
+        data = json.loads(request.body)
+        message = data['message']
+        fileName = str(uuid.uuid4())
+        #fileName = data['filename']
+
+        qmd_content = f"""---\ntitle: "Sample powerpoint"\nformat: pptx\nauthor: "ivan"\n---\n{message}"""
+        trim_tabs = re.sub(r'[ \t]*\n[ \t]*', '\n', qmd_content)
+        cleaned_text = re.sub(r'^[#\*]+\s*slide \d+:\s*', '', trim_tabs, flags=re.IGNORECASE | re.MULTILINE)
+        #print(repr(cleaned))
+        # clean up the qmd file, remove extra tabs(\t) for each new line
+        input_qmd_path = os.path.join(settings.BASE_DIR, "quarto", "files" ,f'{fileName}.qmd')
+        output_pptx_path = os.path.join(settings.BASE_DIR,"quarto", "files", f'{fileName}.pptx')
+
+        #os.makedirs(os.path.dirname(output_pptx_path), exist_ok=True)
+        
+        with open (input_qmd_path, 'w', encoding="utf-8") as f:
+            f.write(cleaned_text)
+
+        subprocess.run(['quarto', 'render', f"quarto/files/{fileName}.qmd" ], check=True)
+        
+        if os.path.exists(output_pptx_path):
+            response =  FileResponse(
+                open(output_pptx_path, 'rb'),
+                as_attachment=True,
+                filename=fileName,
+            )
+        else:
+            raise Http404("Presentation file not found.")
+
+        threading.Thread(target=cleanup, args=(input_qmd_path, output_pptx_path)).start()
+
+        return response
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
       
 def download_from_media(request, filename):
      file_path = os.path.join(settings.MEDIA_ROOT, filename)
      try:
         return FileResponse(open(file_path,'rb'),as_attachment=True, filename=filename)
      except:
+        raise Http404("File not found")
+     
+def cleanup(qmd_files, pptx_files):
+    try:
+        os.remove(qmd_files)
+        os.remove(pptx_files)
+    except:
         raise Http404("File not found")

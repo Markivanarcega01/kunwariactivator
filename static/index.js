@@ -39,13 +39,14 @@ if (tabs) {
       tab.classList.add("active");
 
       contents.forEach((content) => {
+        fileName = `${content.id}.pptx`;
         if (content.id == targetId && content.textContent != "") {
           console.log("active tab found and has content");
-          fileName = `${content.id}.pptx`;
           activeTab = content;
           generatePptx.disabled = false;
         } else if (content.id == targetId && content.textContent == "") {
           console.log("active tab has no content");
+          activeTab = content;
           generatePptx.disabled = true;
         }
         content.hidden = content.id !== targetId;
@@ -148,18 +149,29 @@ if (submitToChatgpt) {
 
     let output = "";
 
+    const turndownService = new TurndownService();
+    turndownService.addRule("horizontalRule", {
+      filter: "hr",
+      replacement: function () {
+        return "\n\n---\n\n";
+      },
+    });
+
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
       //console.log(output)
-      //chatresponse.innerHTML = marked.parse(output);
+      lessonResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //lessonPlanSaveState = output;
         generatePptx.disabled = false;
         console.log(output);
-        lessonResponse.innerHTML = format_chatgpt_response(output);
+        // lessonResponse.innerHTML = turndownService.turndown(
+        //   lessonResponse.innerHTML
+        // );
+        lessonResponse.innerHTML = marked.parse(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -243,13 +255,13 @@ if (generateContent) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
-      //chatresponse.innerHTML = marked.parse(output);
+      contentResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //contentSaveState = output;
         generatePptx.disabled = false;
         console.log(output);
-        contentResponse.innerHTML = format_chatgpt_response(output);
+        contentResponse.innerHTML = marked.parse(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -287,13 +299,13 @@ if (generateFacilitatorScript) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
-      //chatresponse.innerHTML = marked.parse(output);
+      facilitatorScriptResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //facilitatorScriptSaveState = output;
         generatePptx.disabled = false;
         console.log(output);
-        facilitatorScriptResponse.innerHTML = format_chatgpt_response(output);
+        facilitatorScriptResponse.innerHTML = marked.parse(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -310,6 +322,22 @@ if (generatePptx) {
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
+    message.textContent = "Generating please wait...";
+    const turndownService = new TurndownService();
+    turndownService.addRule("horizontalRule", {
+      filter: "hr",
+      replacement: function () {
+        return "\n\n---\n\n";
+      },
+    });
+    turndownService.addRule("blockImage", {
+      filter: "img",
+      replacement: function (content, node) {
+        const alt = node.alt || "";
+        const src = node.getAttribute("src") || "";
+        return `\n\n![${alt}](${src})\n\n`;
+      },
+    });
     const response = await fetch("/homepage/generate_pptx/", {
       method: "POST",
       headers: {
@@ -317,7 +345,7 @@ if (generatePptx) {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        message: activeTab.innerHTML,
+        message: turndownService.turndown(activeTab.innerHTML),
         filename: fileName,
       }),
     });
@@ -325,6 +353,7 @@ if (generatePptx) {
 
     if (response.ok) {
       const blob = await response.blob();
+      message.textContent = "";
       const downloadUrl = window.URL.createObjectURL(blob);
 
       const a = document.createElement("a");
