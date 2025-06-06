@@ -191,7 +191,6 @@ def generate_content(request):
             message += """
 Please generate comprehensive slide content for each episode, including:
 
-Please include images(Online URLs) for each topic that are accessible online based on the headings. Following the format ![alt text](Image URL) and make sure it was on a new line,
 
 ## Episode 1: "Concept Introduction" - Create detailed slides with(separate each slide with ---):
 Opening slide with compelling hook and visual theme
@@ -229,7 +228,10 @@ Celebration and accomplishment recognition
 
 ---
 """  
-            """Please generate detailed content for the Episode slides above."""
+            """
+            (Please include images(Online URLs) for each topic that are accessible online Following the format ![alt text](Image URL) and make sure it was on a new line)
+            Please include images(Online URLs) for each topic that are accessible online based on the headings. Following the format ![alt text](Image URL) and make sure it was on a new line,
+            Please generate detailed content for the Episode slides above."""
             response = StreamingHttpResponse(generate_response(message), status=200, content_type='text/plain')
             return response
      except Exception as e:
@@ -319,7 +321,7 @@ For Each Episode (1-4), Create Detailed Implementation Guides:
      return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-def generate_pptxs(request):
+def generate_pptx(request):
     prs = Presentation()
     pptx_io = io.BytesIO()
     # dimension_width = emu_to_inches(prs.slide_width)
@@ -346,14 +348,12 @@ def generate_pptxs(request):
             run_once = True
             for part in parts:
                 if part == " ":
-                    continue
-                if run_once == False:
+                    print("Part is None")
+                matches = re.findall(pattern, part) #[('h1', 'Title One'), ('p', 'This is a paragraph.'), ('h2', 'Subtitle'), ('h3', 'Section')]
+                if run_once == False and len(matches) != 0:
                     slide = prs.slides.add_slide(prs.slide_layouts[1])
                     content_placeholder = slide.placeholders[1]
-                matches = re.findall(pattern, part) #[('h1', 'Title One'), ('p', 'This is a paragraph.'), ('h2', 'Subtitle'), ('h3', 'Section')]
-                print(matches)
                 for i in matches: 
-                    #print(i)
                     if run_once:
                         title_slide.shapes.title.text = i[1]
                         run_once = False
@@ -384,20 +384,12 @@ def generate_pptxs(request):
                 content_type='application/vnd.openxmlformats-officedocument.presentationml.presentation'
             )
             response['Content-Disposition'] = 'attachment; filename="sample.pptx"'
-            print(response)
+            #print(response)
             return response
-            # Step 4: Render using Quarto
-            # subprocess.run(["quarto", "render", "quarto/index.qmd"], check=True)
-            # # Step 5: Return as downloadable file
-            # return FileResponse(
-            # open("quarto/index.pptx", "rb"),
-            # as_attachment=True,
-            # filename="Sample.pptx"
-            # )
     except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     
-def generate_pptx(request):
+def generate_pptxs(request):
     try:
         if request.method != "POST":
             return  JsonResponse({"error": "Invalid request"}, status=405)
@@ -414,15 +406,15 @@ def generate_pptx(request):
         cleaned_text = re.sub(r'^[#\*]+\s*slide \d+:\s*', '', trim_tabs, flags=re.IGNORECASE | re.MULTILINE)
         #print(repr(cleaned))
         # clean up the qmd file, remove extra tabs(\t) for each new line
-        input_qmd_path = os.path.join(settings.BASE_DIR, "quarto", "files" ,f'{fileName}.qmd')
-        output_pptx_path = os.path.join(settings.BASE_DIR,"quarto", "files", f'{fileName}.pptx')
+        input_qmd_path = os.path.join(settings.BASE_DIR, "quarto_output", "files" ,f'{fileName}.qmd')
+        output_pptx_path = os.path.join(settings.BASE_DIR,"quarto_output", "files", f'{fileName}.pptx')
 
         #os.makedirs(os.path.dirname(output_pptx_path), exist_ok=True)
         
         with open (input_qmd_path, 'w', encoding="utf-8") as f:
             f.write(cleaned_text)
 
-        subprocess.run(['quarto', 'render', f"quarto/files/{fileName}.qmd" ], check=True)
+        subprocess.run(['quarto', 'render', f"quarto_output/files/{fileName}.qmd" ], check=True)
         
         if os.path.exists(output_pptx_path):
             response =  FileResponse(

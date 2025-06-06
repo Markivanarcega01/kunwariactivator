@@ -39,13 +39,14 @@ if (tabs) {
       tab.classList.add("active");
 
       contents.forEach((content) => {
-        fileName = `${content.id}.pptx`;
         if (content.id == targetId && content.textContent != "") {
           console.log("active tab found and has content");
+          fileName = `${content.id}.pptx`;
           activeTab = content;
           generatePptx.disabled = false;
         } else if (content.id == targetId && content.textContent == "") {
           console.log("active tab has no content");
+          fileName = `${content.id}.pptx`;
           activeTab = content;
           generatePptx.disabled = true;
         }
@@ -162,7 +163,7 @@ if (submitToChatgpt) {
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
       //console.log(output)
-      lessonResponse.innerHTML = marked.parse(output);
+      //lessonResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //lessonPlanSaveState = output;
@@ -171,7 +172,8 @@ if (submitToChatgpt) {
         // lessonResponse.innerHTML = turndownService.turndown(
         //   lessonResponse.innerHTML
         // );
-        lessonResponse.innerHTML = marked.parse(output);
+        //lessonResponse.innerHTML = marked.parse(output);
+        lessonResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -255,13 +257,14 @@ if (generateContent) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
-      contentResponse.innerHTML = marked.parse(output);
+      //contentResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //contentSaveState = output;
         generatePptx.disabled = false;
         console.log(output);
-        contentResponse.innerHTML = marked.parse(output);
+        //contentResponse.innerHTML = marked.parse(output);
+        contentResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -299,13 +302,14 @@ if (generateFacilitatorScript) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
-      facilitatorScriptResponse.innerHTML = marked.parse(output);
+      //facilitatorScriptResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //facilitatorScriptSaveState = output;
         generatePptx.disabled = false;
         console.log(output);
-        facilitatorScriptResponse.innerHTML = marked.parse(output);
+        //facilitatorScriptResponse.innerHTML = marked.parse(output);
+        facilitatorScriptResponse.innerHTML = format_chatgpt_response(output);
         setTimeout(() => {
           //message.style.display = "none"
           message.textContent = "";
@@ -345,7 +349,8 @@ if (generatePptx) {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        message: turndownService.turndown(activeTab.innerHTML),
+        message: activeTab.innerHTML,
+        //message: turndownService.turndown(activeTab.innerHTML),
         filename: fileName,
       }),
     });

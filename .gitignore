@@ -1,4 +1,6 @@
 .env
 *.pyc
 /media
+quarto_output
 quarto
+kunwari_venv
