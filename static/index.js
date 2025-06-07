@@ -429,7 +429,7 @@ if(compileAllAndGeneratePptx){
 
       const a = document.createElement("a");
       a.href = downloadUrl;
-      a.download = fileName || "presentation.pptx"; // fallback name
+      a.download = "content&facilitator_script.pptx"; // fallback name
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
