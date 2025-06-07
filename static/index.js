@@ -164,7 +164,7 @@ if (submitToChatgpt) {
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
       //console.log(output)
-      lessonResponse.innerHTML = marked.parse(output);
+      //lessonResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //lessonPlanSaveState = output;
@@ -259,7 +259,7 @@ if (generateContent) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
       message.textContent = "Generating please wait...";
-      contentResponse.innerHTML = marked.parse(output);
+      //contentResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //contentSaveState = output;
@@ -305,7 +305,7 @@ if (generateFacilitatorScript) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      facilitatorScriptResponse.innerHTML = marked.parse(output);
+      //facilitatorScriptResponse.innerHTML = marked.parse(output);
 
       if (done) {
         //facilitatorScriptSaveState = output;
