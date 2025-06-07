@@ -118,6 +118,7 @@ if (loginBtn) {
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
+    message.textContent = "Generating please wait...";
     //fileName = "lesson_plan.pptx";
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
@@ -232,6 +233,7 @@ if (submitToChatgpt) {
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
+    message.textContent = "Generating please wait...";
     //generateEpisodes.style.display = "none";
     generateFacilitatorScript.style.display = "block";
     //fileName = "content.pptx";
@@ -281,6 +283,8 @@ if (generateFacilitatorScript) {
     //generateContent.style.display = "none";
     //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
+
+    message.textContent = "Generating please wait...";
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
@@ -301,7 +305,6 @@ if (generateFacilitatorScript) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait...";
       facilitatorScriptResponse.innerHTML = marked.parse(output);
 
       if (done) {
