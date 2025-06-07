@@ -372,12 +372,12 @@ form {
 .body-index .message-download {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .body-index .message-download .btn-under-gptresponse {
   margin-left: 8px;
-  width: 30%;
+  width: 25%;
 }
 
 

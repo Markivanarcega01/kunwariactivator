@@ -19,6 +19,7 @@ const lessonResponse = document.querySelector("#lesson_plan");
 const contentResponse = document.querySelector("#content");
 const facilitatorScriptResponse = document.querySelector("#facilitator_script");
 const generatePptx = document.querySelector("#generate-pptx");
+const compileAllAndGeneratePptx = document.querySelector("#compile-all-and-generate-pptx");
 //const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
 let fileName = "lesson_plan.pptx";
@@ -118,7 +119,7 @@ if (loginBtn) {
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
-    message.textContent = "Generating please wait...";
+    message.textContent = "Generating...";
     //fileName = "lesson_plan.pptx";
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
@@ -162,7 +163,7 @@ if (submitToChatgpt) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait...";
+      //message.textContent = "Generating...";
       //console.log(output)
       //lessonResponse.innerHTML = marked.parse(output);
 
@@ -233,7 +234,7 @@ if (submitToChatgpt) {
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
-    message.textContent = "Generating please wait...";
+    message.textContent = "Generating...";
     //generateEpisodes.style.display = "none";
     generateFacilitatorScript.style.display = "block";
     //fileName = "content.pptx";
@@ -258,7 +259,7 @@ if (generateContent) {
     while (true) {
       const { done, value } = await reader.read();
       output += new TextDecoder().decode(value);
-      message.textContent = "Generating please wait...";
+      //message.textContent = "Generating please wait...";
       //contentResponse.innerHTML = marked.parse(output);
 
       if (done) {
@@ -284,7 +285,7 @@ if (generateFacilitatorScript) {
     //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
 
-    message.textContent = "Generating please wait...";
+    message.textContent = "Generating...";
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
@@ -309,6 +310,7 @@ if (generateFacilitatorScript) {
 
       if (done) {
         //facilitatorScriptSaveState = output;
+        compileAllAndGeneratePptx.disabled = false;
         generatePptx.disabled = false;
         console.log(output);
         //facilitatorScriptResponse.innerHTML = marked.parse(output);
@@ -329,22 +331,22 @@ if (generatePptx) {
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
-    message.textContent = "Generating please wait...";
-    const turndownService = new TurndownService();
-    turndownService.addRule("horizontalRule", {
-      filter: "hr",
-      replacement: function () {
-        return "\n\n---\n\n";
-      },
-    });
-    turndownService.addRule("blockImage", {
-      filter: "img",
-      replacement: function (content, node) {
-        const alt = node.alt || "";
-        const src = node.getAttribute("src") || "";
-        return `\n\n![${alt}](${src})\n\n`;
-      },
-    });
+    message.textContent = "Generating...";
+    //const turndownService = new TurndownService();
+    // turndownService.addRule("horizontalRule", {
+    //   filter: "hr",
+    //   replacement: function () {
+    //     return "\n\n---\n\n";
+    //   },
+    // });
+    // turndownService.addRule("blockImage", {
+    //   filter: "img",
+    //   replacement: function (content, node) {
+    //     const alt = node.alt || "";
+    //     const src = node.getAttribute("src") || "";
+    //     return `\n\n![${alt}](${src})\n\n`;
+    //   },
+    // });
     const response = await fetch("/homepage/generate_pptx/", {
       method: "POST",
       headers: {
@@ -373,10 +375,72 @@ if (generatePptx) {
       window.URL.revokeObjectURL(downloadUrl);
     } else {
       const errorData = await response.json();
+      message.textContent = "";
       console.error("Error generating PPTX:", errorData.error);
       alert("Failed to generate PowerPoint: " + errorData.error);
     }
   });
+}
+
+if(compileAllAndGeneratePptx){
+ compileAllAndGeneratePptx.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if(contentResponse.innerHTML == "" || facilitatorScriptResponse.innerHTML == "" || lessonResponse.innerHTML == ""){
+      alert("Please generate content, facilitator script and lesson plan first");
+      return
+    }
+    let csrf_token = document.querySelector(
+      "input[name=csrfmiddlewaretoken]"
+    ).value;
+    message.textContent = "Generating...";
+    // const turndownService = new TurndownService();
+    // turndownService.addRule("horizontalRule", {
+    //   filter: "hr",
+    //   replacement: function () {
+    //     return "\n\n---\n\n";
+    //   },
+    // });
+    // turndownService.addRule("blockImage", {
+    //   filter: "img",
+    //   replacement: function (content, node) {
+    //     const alt = node.alt || "";
+    //     const src = node.getAttribute("src") || "";
+    //     return `\n\n![${alt}](${src})\n\n`;
+    //   },
+    // });
+    const response = await fetch("/homepage/generate_pptx/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrf_token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        message: contentResponse.innerHTML + facilitatorScriptResponse.innerHTML,
+        //message: turndownService.turndown(activeTab.innerHTML),
+        filename: fileName,
+      }),
+    });
+    console.log(response);
+
+    if (response.ok) {
+      const blob = await response.blob();
+      message.textContent = "";
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = fileName || "presentation.pptx"; // fallback name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+    } else {
+      const errorData = await response.json();
+      message.textContent = "";
+      console.error("Error generating PPTX:", errorData.error);
+      alert("Failed to generate PowerPoint: " + errorData.error);
+    }
+  }); 
 }
 
 // if (downloadPptx) {
