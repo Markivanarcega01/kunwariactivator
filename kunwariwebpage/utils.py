@@ -2,7 +2,7 @@ import base64
 import os
 from openai import OpenAI
 
-import fitz
+import pymupdf as fitz
 from docx import Document
 from django.conf import settings
 import re
@@ -61,21 +61,21 @@ def generate_response(prompt, files = None):
                         })
                     elif ext == 'pdf':
                         text = extract_text_from_pdf(file)
-                        print(text)
+                        #print(text)
                         messages_container.append({
                             "type":"text",
                             "text":f"Extracted from {file}:\n\n{text}"
                         })
                     elif ext == 'docx':
                         text = extract_text_from_docx(file)
-                        print(text)
+                        #print(text)
                         messages_container.append({
                             "type":"text",
                             "text":f"Extracted from {file}:\n\n{text}"
                         })
                     elif ext == 'txt':
                         text = extract_text_from_txt(file)
-                        print(text)
+                        #print(text)
                         messages_container.append({
                             "type":"text",
                             "text":f"Extracted from {file}:\n\n{text}"
