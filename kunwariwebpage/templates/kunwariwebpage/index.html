@@ -7,7 +7,7 @@
         {% csrf_token %}
         <h1>Kunwari Activator</h1>
         <textarea id="prompt" placeholder="eg. mathematics, 60 minutes, learning objectives" name="prompt"></textarea>
-        <input type="file" id="img" name="img" accept="image/*" multiple>
+        <input type="file" id="files" name="files" accept=".docx, .pdf, .txt, image/*" multiple>
         <button class="submit" type="submit" id="submit-to-chatgpt">Generate Lesson Plan</button>
         <button class="submit" type="submit" id="generate-episodes" hidden>Generate Episodes</button>
         <button class="submit" type="submit" id="generate-content" hidden>Generate Content</button>

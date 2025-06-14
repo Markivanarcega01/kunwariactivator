@@ -42,9 +42,9 @@ def chatbot_view(request):
         try:
             if request.method == "POST":
                 message = request.POST.get("message")
-                images = request.FILES.getlist("images")
+                files = request.FILES.getlist("files")
                 print(message)
-                #print(images)
+                print(files)
                 #data = json.loads(request.body)
                 #print(data)
                 #message = data['message']
@@ -117,7 +117,7 @@ Life Skills, Soft Skills, Creative Skills, 5 C’s of 21st-century learning Appl
                 # with open("static/Kunwari Activator Template (KATE) V2.pdf", "r", encoding="utf-8") as f:
                 #      instructions = f.read()
                 # message+= instructions
-                response = StreamingHttpResponse(generate_response(message, images), status=200, content_type='text/plain')
+                response = StreamingHttpResponse(generate_response(message, files), status=200, content_type='text/plain')
                 #return render(request, "kunwariwebpage/index.html", {"response": 'response'})
                 return response
         except Exception as e:

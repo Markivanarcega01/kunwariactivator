@@ -12,7 +12,8 @@ const generateFacilitatorScript = document.querySelector(
 );
 const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
-const img = document.querySelector("#img");
+const files = document.querySelector("#files");
+//const img = document.querySelector("#img");
 //const chatresponse = document.querySelector("#chat_response");
 const lessonResponse = document.querySelector("#lesson_plan");
 //const episodeResponse = document.querySelector("#episodes");
@@ -138,8 +139,8 @@ if (submitToChatgpt) {
     formData.append("message", prompt.value);
 
     // Append multiple files
-    for (let i = 0; i < img.files.length; i++) {
-      formData.append("images", img.files[i]);
+    for (let i = 0; i < files.files.length; i++) {
+      formData.append("files", files.files[i]);
     }
     const response = await fetch("/homepage/chatbot/", {
       method: "POST",
