@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'kunwari_activator.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kunwari_db',
-        'USER': 'root',
-        'PASSWORD': 'Markivan01',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': str(os.getenv('DB_NAME')),
+        'USER': str(os.getenv('DB_USER')),
+        'PASSWORD': str(os.getenv('DB_PASSWORD')),
+        'HOST': str(os.getenv('DB_HOST')),
+        'PORT': str(os.getenv('DB_PORT')),
     }
 }
 
@@ -131,7 +131,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-#STATIC_ROOT = 'static/'
+STATIC_ROOT = str(os.getenv('STATIC_ROOT'))
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
