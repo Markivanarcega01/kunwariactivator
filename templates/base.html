@@ -7,7 +7,9 @@
 </head>
 
 <body>
-    {% include 'navbar.html' %}
+    {% if params %}
+        {% include 'navbar.html' %}
+    {% endif %}
 
     {% if messages %}
         {% for message in messages %}

@@ -29,6 +29,51 @@ let activeTab = document.querySelector("#lesson_plan");
 const tabs = document.querySelectorAll(".tabs-heading li");
 const contents = document.querySelectorAll(".tabs-body div");
 
+//const registerForm = document.querySelector("#register-form");
+//const loginForm = document.querySelector("#login-form");
+const registerSubmitBtn = document.querySelector("#register-submit-btn");
+
+//Register and Login
+if(registerSubmitBtn) {
+  registerSubmitBtn.addEventListener("click", async(e) => {
+    e.preventDefault();
+    let csrf_token = document.querySelector(
+      "input[name=csrfmiddlewaretoken]"
+    ).value;
+    const registerFirstName = document.getElementById("register-firstname").value
+    const registerLastName = document.getElementById("register-lastname").value
+    const registerUsername = document.getElementById("register-username").value
+    const registerEmail = document.getElementById("register-email").value
+    const registerPassword = document.getElementById("register-password").value
+    const response = await fetch("/register/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrf_token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: registerFirstName,
+        password: registerPassword,
+        username: registerUsername,
+        email: registerEmail,
+        last_name: registerLastName
+      }),
+    });
+    if(response.ok){
+      const data = await response.json();
+      if(data.success){
+        window.location.href = data.redirect_url;
+      }
+    }
+    if(!response.ok){
+      const errorData = await response.json();
+      alert(errorData.error);
+    }
+
+  })
+}
+
+
 if (tabs) {
   tabs.forEach((tab) => {
     tab.addEventListener("click", (e) => {

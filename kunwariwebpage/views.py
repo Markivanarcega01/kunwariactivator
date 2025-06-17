@@ -15,17 +15,35 @@ import re
 import io
 import uuid
 import threading
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 
+# def indexs(request):
+#     if 'user' in request.session:
+#         db = get_user_model()
+#         current_user = request.session['user']
+#         isUserAdmin = db.objects.filter(username = current_user, is_superuser = 1).exists()
+#         params = {'current_user': current_user, "isAdmin": isUserAdmin}
+#         return render(request, 'kunwariwebpage/index.html', {"params":params})
+#     else:
+#         return redirect('login')
+    
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def index(request):
-    if 'user' in request.session:
-        db = get_user_model()
-        current_user = request.session['user']
-        isUserAdmin = db.objects.filter(username = current_user, is_superuser = 1).exists()
-        params = {'current_user': current_user, "isAdmin": isUserAdmin}
-        return render(request, 'kunwariwebpage/index.html', {"params":params})
-    else:
-        return redirect('login')
+    try:
+        current_user = request.user
+        isUserAdmin = current_user.is_superuser  # no need to query DB again
+
+        params = {
+            'current_user': current_user.username,
+            'isAdmin': isUserAdmin
+        }
+        return render(request, 'kunwariwebpage/index.html', {"params": params})
+    except:
+        return JsonResponse({"error": "Login failed"}, status=500)
+    
 
 
 #def register(request):

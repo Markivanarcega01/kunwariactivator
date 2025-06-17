@@ -45,7 +45,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
         "3": "Tier 3"
     }
     username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
+    #password = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(_("email address"),unique=True)
@@ -55,7 +55,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomAccountManager()
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['password', 'email']
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username
