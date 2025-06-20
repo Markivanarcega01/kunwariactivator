@@ -20,7 +20,9 @@ const lessonResponse = document.querySelector("#lesson_plan");
 const contentResponse = document.querySelector("#content");
 const facilitatorScriptResponse = document.querySelector("#facilitator_script");
 const generatePptx = document.querySelector("#generate-pptx");
-const compileAllAndGeneratePptx = document.querySelector("#compile-all-and-generate-pptx");
+const compileAllAndGeneratePptx = document.querySelector(
+  "#compile-all-and-generate-pptx"
+);
 //const downloadPptx = document.querySelector("#download-pptx");
 const message = document.querySelector("#message");
 let fileName = "lesson_plan.pptx";
@@ -34,17 +36,18 @@ const contents = document.querySelectorAll(".tabs-body div");
 const registerSubmitBtn = document.querySelector("#register-submit-btn");
 
 //Register and Login
-if(registerSubmitBtn) {
-  registerSubmitBtn.addEventListener("click", async(e) => {
+if (registerSubmitBtn) {
+  registerSubmitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
-    const registerFirstName = document.getElementById("register-firstname").value
-    const registerLastName = document.getElementById("register-lastname").value
-    const registerUsername = document.getElementById("register-username").value
-    const registerEmail = document.getElementById("register-email").value
-    const registerPassword = document.getElementById("register-password").value
+    const registerFirstName =
+      document.getElementById("register-firstname").value;
+    const registerLastName = document.getElementById("register-lastname").value;
+    const registerUsername = document.getElementById("register-username").value;
+    const registerEmail = document.getElementById("register-email").value;
+    const registerPassword = document.getElementById("register-password").value;
     const response = await fetch("/register/", {
       method: "POST",
       headers: {
@@ -56,23 +59,21 @@ if(registerSubmitBtn) {
         password: registerPassword,
         username: registerUsername,
         email: registerEmail,
-        last_name: registerLastName
+        last_name: registerLastName,
       }),
     });
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json();
-      if(data.success){
+      if (data.success) {
         window.location.href = data.redirect_url;
       }
     }
-    if(!response.ok){
+    if (!response.ok) {
       const errorData = await response.json();
       alert(errorData.error);
     }
-
-  })
+  });
 }
-
 
 if (tabs) {
   tabs.forEach((tab) => {
@@ -102,18 +103,6 @@ if (tabs) {
     });
   });
 }
-
-// const adminCredentials = {
-//     username: 'admin',
-//     password: 'password'
-// }
-
-// loginSubmit.addEventListener('click', (e) => {
-//     e.preventDefault();
-//     if(username.value === adminCredentials.username && password.value === adminCredentials.password) {
-//         console.log('You are an admin');
-//     }
-// })
 
 //Revise this, change the parameter into string instead of array
 function format_chatgpt_response(paragraph) {
@@ -162,24 +151,33 @@ if (loginBtn) {
     container.classList.remove("active");
   });
 }
+//Listener for the textbox
+if(prompt){
+  //Change this to document eventListener, and add event.target to handle enabling/disabling for all 4 buttons
+  prompt.addEventListener("input", (e) => {
+    console.log(prompt.textContent);
+    if(prompt.value == ""){
+      submitToChatgpt.disabled = true;
+    }else{
+      submitToChatgpt.disabled = false;
+    }
+  })
+}
+
+
 if (submitToChatgpt) {
   submitToChatgpt.addEventListener("click", async function (e) {
     e.preventDefault();
+    submitToChatgpt.disabled = true;
     message.textContent = "Generating...";
     //fileName = "lesson_plan.pptx";
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
       //generatePptx.style.display = "block";
       //generateEpisodes.style.display = "block";
-      generateContent.style.display = "block";
+      //generateContent.style.display = "block";
       //generateFacilitatorScript.style.display = "block";
     }
-    // if (generateContent.checkVisibility()) {
-    //   generateContent.style.display = "none";
-    // }
-    // if (generateFacilitatorScript.checkVisibility()) {
-    //   generateFacilitatorScript.style.display = "none";
-    // }
     const formData = new FormData();
     formData.append("message", prompt.value);
 
@@ -215,6 +213,8 @@ if (submitToChatgpt) {
 
       if (done) {
         //lessonPlanSaveState = output;
+        submitToChatgpt.disabled = false;
+        generateContent.disabled = false;
         generatePptx.disabled = false;
         console.log(output);
         // lessonResponse.innerHTML = turndownService.turndown(
@@ -280,9 +280,10 @@ if (submitToChatgpt) {
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
+    generateContent.disabled = true;
     message.textContent = "Generating...";
     //generateEpisodes.style.display = "none";
-    generateFacilitatorScript.style.display = "block";
+    //generateFacilitatorScript.style.display = "block";
     //fileName = "content.pptx";
     //console.log(chatresponse.textContent)
     let csrf_token = document.querySelector(
@@ -310,6 +311,8 @@ if (generateContent) {
 
       if (done) {
         //contentSaveState = output;
+        generateContent.disabled = false;
+        generateFacilitatorScript.disabled = false;
         generatePptx.disabled = false;
         console.log(output);
         //contentResponse.innerHTML = marked.parse(output);
@@ -330,7 +333,7 @@ if (generateFacilitatorScript) {
     //generateContent.style.display = "none";
     //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
-
+    generateFacilitatorScript.disabled = true;
     message.textContent = "Generating...";
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -356,6 +359,7 @@ if (generateFacilitatorScript) {
 
       if (done) {
         //facilitatorScriptSaveState = output;
+        generateFacilitatorScript.disabled = false;
         compileAllAndGeneratePptx.disabled = false;
         generatePptx.disabled = false;
         console.log(output);
@@ -374,6 +378,10 @@ if (generateFacilitatorScript) {
 if (generatePptx) {
   generatePptx.addEventListener("click", async (e) => {
     e.preventDefault();
+    if(activeTab.textContent == ""){
+      alert(`${activeTab.id} may be empty`)
+      return
+    }
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
     ).value;
@@ -428,12 +436,14 @@ if (generatePptx) {
   });
 }
 
-if(compileAllAndGeneratePptx){
- compileAllAndGeneratePptx.addEventListener("click", async (e) => {
+if (compileAllAndGeneratePptx) {
+  compileAllAndGeneratePptx.addEventListener("click", async (e) => {
     e.preventDefault();
-    if(contentResponse.innerHTML == "" || facilitatorScriptResponse.innerHTML == "" || lessonResponse.innerHTML == ""){
-      alert("Please generate content, facilitator script and lesson plan first");
-      return
+    if (contentResponse.textContent == "" ||facilitatorScriptResponse.textContent == "") {
+      alert(
+        "Please generate content, content and facilitator script first"
+      );
+      return;
     }
     let csrf_token = document.querySelector(
       "input[name=csrfmiddlewaretoken]"
@@ -461,7 +471,8 @@ if(compileAllAndGeneratePptx){
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        message: contentResponse.innerHTML + facilitatorScriptResponse.innerHTML,
+        message:
+          contentResponse.innerHTML + facilitatorScriptResponse.innerHTML,
         //message: turndownService.turndown(activeTab.innerHTML),
         filename: fileName,
       }),
@@ -484,9 +495,9 @@ if(compileAllAndGeneratePptx){
       const errorData = await response.json();
       message.textContent = "";
       console.error("Error generating PPTX:", errorData.error);
-      alert("Failed to generate PowerPoint: " + errorData.error);
+      alert("Failed to generate PowerPoint: Content and Facilitator Script may be empty");
     }
-  }); 
+  });
 }
 
 // if (downloadPptx) {
