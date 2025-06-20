@@ -280,6 +280,11 @@ if (submitToChatgpt) {
 if (generateContent) {
   generateContent.addEventListener("click", async (e) => {
     e.preventDefault();
+    if(lessonResponse.textContent == ""){
+      alert("Please generate a lesson plan first");
+      return;
+    }
+    //submitToChatgpt.style.display = "none";
     generateContent.disabled = true;
     message.textContent = "Generating...";
     //generateEpisodes.style.display = "none";
@@ -330,6 +335,10 @@ if (generateContent) {
 if (generateFacilitatorScript) {
   generateFacilitatorScript.addEventListener("click", async (e) => {
     e.preventDefault();
+    if(contentResponse.textContent == ""){
+      alert("Please generate a content first");
+      return;
+    }
     //generateContent.style.display = "none";
     //fileName = "facilitator_script.pptx";
     //console.log(chatresponse.textContent)
