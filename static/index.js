@@ -129,6 +129,7 @@ function renderFileList() {
         fileItem.classList.add('file-item');
 
         const fileName = document.createElement('span');
+        fileName.style.overflow = 'hidden';
         fileName.textContent = `${file.name} (${file.type || 'Unknown'})`;
 
         const removeBtn = document.createElement('button');
