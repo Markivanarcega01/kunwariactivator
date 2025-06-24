@@ -12,7 +12,10 @@ const generateFacilitatorScript = document.querySelector(
 );
 const generateContent = document.querySelector("#generate-content");
 const prompt = document.querySelector("#prompt");
-const files = document.querySelector("#files");
+//const files = document.querySelector("#files");
+const filesInput = document.querySelector('#filesInput');
+const filePreviewList = document.getElementById('filePreviewList');
+let selectedFiles = [];
 //const img = document.querySelector("#img");
 //const chatresponse = document.querySelector("#chat_response");
 const lessonResponse = document.querySelector("#lesson_plan");
@@ -104,6 +107,47 @@ if (tabs) {
   });
 }
 
+//File Upload
+filesInput.addEventListener('change', (e) => {
+    const newFiles = Array.from(e.target.files);
+
+    if (selectedFiles.length + newFiles.length > 5) {
+        alert('You can only upload up to 5 files.');
+        filesInput.value = '';
+        return;
+    }
+
+    selectedFiles = [...selectedFiles, ...newFiles];
+    renderFileList();
+    filesInput.value = '';
+});
+
+function renderFileList() {
+    filePreviewList.innerHTML = '';
+    selectedFiles.forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.classList.add('file-item');
+
+        const fileName = document.createElement('span');
+        fileName.textContent = `${file.name} (${file.type || 'Unknown'})`;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'file-remove';
+        removeBtn.textContent = 'Delete';
+        removeBtn.onclick = () => {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+        };
+
+        fileItem.appendChild(fileName);
+        fileItem.appendChild(removeBtn);
+        filePreviewList.appendChild(fileItem);
+    });
+    // Disable input if 5 files are already selected
+    filesInput.disabled = selectedFiles.length >= 5;
+}
+//End of File Upload
+
 //Revise this, change the parameter into string instead of array
 function format_chatgpt_response(paragraph) {
   const headingOrBold = /^(###)|^\*\*.*\*\*$/;
@@ -173,18 +217,15 @@ if (submitToChatgpt) {
     //fileName = "lesson_plan.pptx";
     if (lessonResponse.innerHTML != " ") {
       console.log("ivan too");
-      //generatePptx.style.display = "block";
-      //generateEpisodes.style.display = "block";
-      //generateContent.style.display = "block";
-      //generateFacilitatorScript.style.display = "block";
     }
     const formData = new FormData();
     formData.append("message", prompt.value);
-
+    console.log(selectedFiles)
     // Append multiple files
-    for (let i = 0; i < files.files.length; i++) {
-      formData.append("files", files.files[i]);
-    }
+    selectedFiles.forEach((file) => {
+      formData.append("files", file);
+    })
+
     const response = await fetch("/homepage/chatbot/", {
       method: "POST",
       body: formData,

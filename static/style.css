@@ -566,6 +566,33 @@ form {
 .choose-button:hover {
   background-color: #000;
 }
+
+/* File Upload Css */
+.file-list {
+    margin-top: 15px;
+}
+
+.file-item {
+    background: #f1f1f1;
+    border-radius: 5px;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.file-remove {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* End of file upload css */
+
 @media (max-width: 650px) {
   .pricing-container {
     padding: 25px 20px;
